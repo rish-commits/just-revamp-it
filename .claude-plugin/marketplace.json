@@ -1,12 +1,16 @@
 {
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
   "name": "just-revamp-it",
+  "description": "Dashboard design system: audit, revamp and build data surfaces to one shared standard across brands",
   "owner": { "name": "Internal Design Systems" },
   "plugins": [
     {
       "name": "just-revamp-it",
-      "source": "./",
-      "description": "Audit, revamp and build dashboards to one shared visual and data-representation system. Brand-neutral, multi-brand by design.",
-      "version": "0.1.0"
+      "description": "Audit, revamp and build dashboards to one shared visual and data-representation system. Brand-neutral and multi-brand by design: derives and validates a full colour system from one accent, measures design restraint, and detects dashboard anti-patterns that make readers draw wrong conclusions.",
+      "version": "0.1.0",
+      "author": { "name": "Internal Design Systems" },
+      "category": "design",
+      "source": "./"
     }
   ]
 }
