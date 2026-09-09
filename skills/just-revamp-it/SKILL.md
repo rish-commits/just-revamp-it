@@ -78,6 +78,8 @@ Deterministic measurement, so judgment is spent on things that need judgment.
 | `node <skill>/scripts/vocabulary.mjs <dir> [--json]` | Measure design restraint. Reports the core vocabulary, the tail to fold in, and a 0-100 score. |
 | `node <skill>/scripts/scan.mjs <dir> [--json]` | Detect dashboard anti-patterns in source: non-semantic green/red, missing tabular numerals, truncated baselines, undefined metrics, missing empty states. |
 
+`--tokens` emits `tokens.json`, the machine-readable source of truth a drift test reads.
+
 Treat script output as evidence, not verdicts. Verify each finding in context and say
 so when one is a false positive.
 
@@ -92,7 +94,7 @@ so when one is a false positive.
 | `chart [question]` | Build | Choose and build the right form for one question | [reference/choosing.md](reference/choosing.md) then [reference/charts.md](reference/charts.md) |
 | `funnel [target]` | Build | Build or fix a funnel, including drop-off and honesty rules | [reference/funnel.md](reference/funnel.md) |
 | `trust [target]` | Refine | Populations, definitions, caveats, freshness, empty and error states | [reference/trust.md](reference/trust.md) |
-| `brand [accent]` | Setup | Onboard a brand: derive tokens, validate, write `.revamp/brand.json` | [reference/brand.md](reference/brand.md) |
+| `brand [accent]` | Setup | Onboard a brand: derive tokens, validate, write `.revamp/brand.json` | [reference/brand.md](reference/brand.md) · [reference/kit.md](reference/kit.md) |
 | `broadcast [target]` | Build | Translate a dashboard into a Slack card, email, PDF, or deck | [reference/broadcast.md](reference/broadcast.md) |
 | `document` | Build | Emit this project's own dashboard spec from its code | [reference/document.md](reference/document.md) |
 
@@ -117,6 +119,7 @@ Reference chapters, loaded by the commands above rather than invoked directly:
 | [reference/performance.md](reference/performance.md) | Node-count budgets and where work belongs |
 | [reference/naming.md](reference/naming.md) | Metric naming grammar, title voice, copy standards, units |
 | [reference/governance.md](reference/governance.md) | Ownership, exceptions, review checklist, migration, enforcement |
+| [reference/kit.md](reference/kit.md) | Shipped tokens, styles, components and starter under `assets/` |
 | [reference/craft-floor.md](reference/craft-floor.md) | General quality floor when no craft skill is present |
 
 Routing:

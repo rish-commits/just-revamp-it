@@ -1,0 +1,13 @@
+{
+  "name": "just-revamp-it",
+  "version": "0.2.1",
+  "private": true,
+  "description": "Dev-only tooling for verifying the kit. The skill itself has no runtime dependencies.",
+  "scripts": {
+    "typecheck": "tsc --noEmit -p tsconfig.json"
+  },
+  "devDependencies": {
+    "@types/react": "^19.2.18",
+    "typescript": "^5.9.3"
+  }
+}

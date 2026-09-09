@@ -379,6 +379,50 @@ ${s.ramp.map((c, i) => `  --chart-${i + 1}-ink: ${s.rampInk[i]};`).join("\n")}
   --tint-hover: ${s.tints.hover};
   --tint-selection: ${s.tints.selection};
   --track: ${s.tints.track};
+
+  /* Structural. Identical in every brand: these are what make two brands' 
+     dashboards read as one system. Changing one needs the system owner. */
+  --font-sans: ${STRUCTURAL.type.family.sans};
+  --font-mono: ${STRUCTURAL.type.family.mono};
+  --text-caption: ${STRUCTURAL.type.scale.caption};
+  --text-label: ${STRUCTURAL.type.scale.label};
+  --text-body: ${STRUCTURAL.type.scale.body};
+  --text-value: ${STRUCTURAL.type.scale.value};
+  --text-display: ${STRUCTURAL.type.scale.display};
+  --weight-medium: ${STRUCTURAL.type.weight.medium};
+  --weight-semibold: ${STRUCTURAL.type.weight.semibold};
+  --tracking-tight: ${STRUCTURAL.type.tracking.tight};
+  --measure: ${STRUCTURAL.type.measure};
+
+${STRUCTURAL.space.map((v, i) => `  --space-${i + 1}: ${v};`).join("\n")}
+
+  --rhythm-continuation: ${STRUCTURAL.rhythm.continuation};
+  --rhythm-section: ${STRUCTURAL.rhythm.section};
+
+  --radius-mark: ${STRUCTURAL.radius.mark};
+  --radius-control: ${STRUCTURAL.radius.control};
+  --radius-card: ${STRUCTURAL.radius.card};
+  --radius-pill: ${STRUCTURAL.radius.pill};
+
+  --grid-measure: ${STRUCTURAL.grid.measure};
+  --grid-gutter: ${STRUCTURAL.grid.gutter};
+  --page-pad-x: ${STRUCTURAL.grid.pagePadX};
+  --page-pad-y: ${STRUCTURAL.grid.pagePadY};
+
+  --row-height: ${STRUCTURAL.row.height};
+  --row-gap: ${STRUCTURAL.row.gap};
+
+  --border-hairline: ${STRUCTURAL.border.hairline};
+  --border-row: ${STRUCTURAL.border.row};
+  --border-strong: ${STRUCTURAL.border.strong};
+
+  --z-sticky-cell: ${STRUCTURAL.z.stickyCell};
+  --z-sticky-header: ${STRUCTURAL.z.stickyHeader};
+  --z-chart-tooltip: ${STRUCTURAL.z.chartTooltip};
+  --z-tooltip: ${STRUCTURAL.z.tooltip};
+  --z-modal: ${STRUCTURAL.z.modal};
+
+  --shadow-card: 0 1px 2px 0 rgb(0 0 0 / 0.05);
 }
 
 /* Dark is re-derived, not inverted: surfaces lighten with elevation, borders are
@@ -418,6 +462,56 @@ ${d.ramp.map((c, i) => `  --chart-${i + 1}-ink: ${d.rampInk[i]};`).join("\n")}
   --axis: ${d.chartChrome.axis};
 }`;
   return wrapper ? `${wrapper} {\n${body.split("\n").map((l) => "  " + l).join("\n")}\n}` : body;
+}
+
+/**
+ * Machine-readable tokens.
+ *
+ * governance.md requires one source of truth that both the code and the docs are
+ * checked against, so this is the artefact a drift test reads. Structural values
+ * (geometry, type, spacing) are brand-independent and identical everywhere; only
+ * the colour block varies per brand.
+ */
+export const STRUCTURAL = {
+  type: {
+    scale:   { caption: "12px", body: "14px", label: "13px", value: "24px", display: "36px" },
+    weight:  { medium: 500, semibold: 600 },
+    tracking:{ tight: "-0.025em", normal: "0" },
+    family:  { sans: "system-ui, sans-serif", mono: "ui-monospace, monospace" },
+    measure: "75ch",
+  },
+  space: [2, 4, 6, 8, 10, 12, 16, 20, 24, 32].map((n) => `${n}px`),
+  rhythm: { tight: "16px", continuation: "16px", section: "32px" },
+  radius: { mark: "6px", control: "8px", card: "16px", pill: "9999px" },
+  grid:   { measure: "72rem", gutter: "16px", pagePadX: "16px", pagePadY: "32px" },
+  row:    { height: "28px", gap: "8px", trackRadius: "6px", minFillPct: 1.5, inFillLabelPct: 8 },
+  chart:  { gridlines: 4, strokePrimary: 2.25, strokeSecondary: 1.75, strokeGrid: 1,
+            areaOpacity: 0.1, smoothTension: 0.18, sparkline: { w: 120, h: 34, dot: 2.25 } },
+  z:      { stickyCell: 10, stickyHeader: 20, chartTooltip: 30, tooltip: 40, modal: 50 },
+  border: { hairline: "rgba(0,0,0,0.06)", row: "rgba(0,0,0,0.05)", strong: "rgba(0,0,0,0.10)" },
+  motion: { transition: "color, background-color, border-color", allowedAnimations: ["spin", "pulse"] },
+};
+
+export function tokens(sys, { dark = false } = {}) {
+  const t = {
+    $meta: { generator: "just-revamp-it/palette.mjs", accent: sys.accent, themes: dark ? ["light", "dark"] : ["light"] },
+    color: {
+      light: {
+        accent: sys.accent, accentUi: sys.accentUi, accentDeep: sys.hero.to,
+        ramp: sys.ramp, rampInk: sys.rampInk,
+        heat: sys.heat, funnel: sys.funnel,
+        delta: sys.delta, neutral: sys.neutral, tints: sys.tints,
+      },
+    },
+    ...STRUCTURAL,
+  };
+  if (dark) t.color.dark = {
+    accentUi: sys.dark.accentUi, accentDeep: sys.dark.hero.to,
+    ramp: sys.dark.ramp, rampInk: sys.dark.rampInk,
+    heat: sys.dark.heat, funnel: sys.dark.funnel,
+    delta: sys.dark.delta, neutral: sys.dark.neutral, chartChrome: sys.dark.chartChrome,
+  };
+  return t;
 }
 
 function report(sys, checks, darkChecks = [], darkOnly = false) {
@@ -475,7 +569,7 @@ function report(sys, checks, darkChecks = [], darkOnly = false) {
 const [, , accentArg, ...flags] = process.argv;
 if (import.meta.url === `file://${process.argv[1]}`) {
   if (!accentArg) {
-    console.error('usage: palette.mjs "#7c3aed" [--css|--json]');
+    console.error('usage: palette.mjs "#7c3aed" [--css|--json|--tokens] [--dark]');
     process.exit(2);
   }
   let sys;
@@ -483,7 +577,8 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   catch (e) { console.error(`error: ${e.message}`); process.exit(2); }
   const checks = validate(sys);
   const darkChecks = validateDark(sys.dark);
-  if (flags.includes("--css")) process.stdout.write(flags.includes("--dark") ? css(sys) : cssLight(sys));
+  if (flags.includes("--tokens")) process.stdout.write(JSON.stringify(tokens(sys, { dark: flags.includes("--dark") }), null, 2) + "\n");
+  else if (flags.includes("--css")) process.stdout.write(flags.includes("--dark") ? css(sys) : cssLight(sys));
   else if (flags.includes("--json")) process.stdout.write(JSON.stringify({ ...sys, checks, darkChecks }, null, 2) + "\n");
   else process.stdout.write(report(sys, checks, darkChecks, flags.includes("--dark")));
   process.exit((flags.includes("--dark") ? [...checks, ...darkChecks] : checks).some((c) => c.level === "fail") ? 1 : 0);

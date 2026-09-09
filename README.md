@@ -76,9 +76,22 @@ The chapter worth reading first is [trust](skills/just-revamp-it/reference/trust
 It is the part general design systems do not have, and the part that decides whether
 a dashboard is believed.
 
+## The kit
+
+Prose does not enforce anything. `assets/` ships the part that does:
+
+- **`tokens.css` / `tokens.json`** — 72 variables, regenerated per brand from one accent
+- **`components.css`** — 69 classes, framework-independent, every value from the tokens
+- **`components/`** — 13 React files that encode the rules rather than restating them: the
+  delta pill cannot report growth from a zero baseline, the funnel cannot render a real
+  value invisibly or blank a 0%, the line chart cannot draw a non-zero baseline
+- **`starter/`** — a worked page in the narrative order, annotated inline
+
+See [reference/kit.md](skills/just-revamp-it/reference/kit.md).
+
 ## Status
 
-v0.2.1. Script layer and reference layer complete. Dashboards are light by default;
+v0.3.0. Script, reference and kit layers complete. Dashboards are light by default;
 the colour system derives and validates a full light palette from one accent, and
 can derive a validated dark one for the narrow cases that justify it. Verified
 against a production dashboard; not yet piloted on a second one.

@@ -1,0 +1,166 @@
+/* just-revamp-it component layer.
+ *
+ * Every value here resolves from tokens.css. Import tokens.css first, then this.
+ * Plain CSS on purpose: a team on any framework, or none, can use these classes,
+ * and re-skinning is a tokens change rather than a find-and-replace.
+ *
+ * Rules encoded here rather than left to the reader:
+ *   - one radius per role, one hairline recipe, one shadow
+ *   - green and red only appear on delta and status classes
+ *   - transitions are colour-only; no transforms, no entrance animation
+ *   - every focusable control gets the same focus ring
+ *   - numerals that share a column get tabular figures
+ */
+
+/* ---------- page ---------- */
+.jr-page { margin-inline: auto; width: 100%; max-width: var(--grid-measure);
+  padding: var(--page-pad-y) var(--page-pad-x); font-family: var(--font-sans);
+  color: var(--foreground); background: var(--canvas); }
+.jr-title { font-size: var(--text-value); font-weight: var(--weight-semibold);
+  letter-spacing: var(--tracking-tight); color: var(--foreground); margin: 0; }
+.jr-dek { margin: 4px 0 24px; max-width: var(--measure); font-size: var(--text-body);
+  color: var(--muted); }
+
+/* ---------- grid ---------- */
+.jr-grid { display: grid; gap: var(--grid-gutter); align-items: start; }
+.jr-grid > * { min-width: 0; }               /* or a wide child blows out its track */
+.jr-grid--hero  { grid-template-columns: 1fr; }
+.jr-grid--strip { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.jr-grid--pair  { grid-template-columns: 1fr; }
+@media (min-width: 640px) { .jr-grid--strip { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (min-width: 1024px) {
+  .jr-grid--hero  { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .jr-grid--hero > .jr-span-2 { grid-column: span 2; }
+  .jr-grid--strip { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .jr-grid--pair  { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+.jr-section { margin-top: var(--rhythm-section); }
+.jr-continue { margin-top: var(--rhythm-continuation); }
+
+/* ---------- card ---------- */
+.jr-card { min-width: 0; border-radius: var(--radius-card); border: 1px solid var(--border-hairline);
+  background: var(--surface); padding: 20px; box-shadow: var(--shadow-card); }
+.jr-card__header { display: flex; flex-wrap: wrap; align-items: flex-start;
+  justify-content: space-between; gap: 8px 12px; margin-bottom: 16px; }
+.jr-card__title { display: flex; align-items: center; gap: 6px; margin: 0;
+  font-size: var(--text-label); font-weight: var(--weight-semibold); color: var(--foreground); }
+.jr-card__subtitle { margin: 2px 0 0; font-size: var(--text-caption); color: var(--muted); }
+.jr-card__actions { flex-shrink: 0; }
+.jr-card__divider { margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--border-hairline); }
+
+/* ---------- numerals ---------- */
+.jr-num { font-variant-numeric: tabular-nums; }
+
+/* ---------- kpi tile ---------- */
+.jr-kpi { display: flex; flex-direction: column; min-width: 0;
+  border-radius: var(--radius-card); border: 1px solid var(--border-hairline);
+  background: var(--surface); padding: 16px; box-shadow: var(--shadow-card); }
+.jr-kpi__head { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
+.jr-kpi__label { font-size: var(--text-caption); font-weight: var(--weight-medium); color: var(--muted); }
+.jr-kpi__row { display: flex; align-items: center; gap: 10px; margin-top: 8px; }
+.jr-kpi__value { font-size: var(--text-value); font-weight: var(--weight-semibold);
+  letter-spacing: var(--tracking-tight); color: var(--foreground); font-variant-numeric: tabular-nums; }
+.jr-kpi__footer { margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border-hairline);
+  font-size: var(--text-caption); color: var(--muted); }
+
+/* ---------- hero ---------- */
+.jr-hero { position: relative; display: flex; flex-direction: column; height: 100%;
+  overflow: hidden; border-radius: var(--radius-card); padding: 20px; color: #fff;
+  background: linear-gradient(135deg, var(--accent-ui) 0%, var(--accent-deep) 100%);
+  box-shadow: var(--shadow-card); }
+.jr-hero__label { font-size: var(--text-caption); font-weight: var(--weight-medium); color: rgb(255 255 255 / .85); }
+.jr-hero__value { margin-top: 4px; font-size: var(--text-display); font-weight: var(--weight-semibold);
+  letter-spacing: var(--tracking-tight); font-variant-numeric: tabular-nums; }
+.jr-hero__spark { display: flex; flex: 1; align-items: center; padding: 16px 0; opacity: .9; }
+.jr-hero__caption { margin-top: auto; font-size: var(--text-caption); color: rgb(255 255 255 / .85); }
+
+/* ---------- delta ---------- */
+.jr-delta { display: inline-flex; align-items: center; gap: 4px; border-radius: var(--radius-pill);
+  padding: 2px 6px; font-size: var(--text-caption); font-weight: var(--weight-semibold);
+  font-variant-numeric: tabular-nums; }
+.jr-delta--good { background: color-mix(in srgb, var(--delta-positive) 12%, transparent); color: var(--delta-positive); }
+.jr-delta--bad  { background: color-mix(in srgb, var(--delta-negative) 12%, transparent); color: var(--delta-negative); }
+.jr-delta--flat { background: color-mix(in srgb, var(--delta-neutral) 12%, transparent);  color: var(--delta-neutral); }
+
+/* ---------- chips ---------- */
+.jr-chip { display: inline-flex; align-items: center; gap: 4px; border-radius: var(--radius-pill);
+  padding: 2px 8px; font-size: var(--text-caption); font-weight: var(--weight-medium);
+  background: var(--track); color: var(--muted); }
+.jr-chip--good { background: color-mix(in srgb, var(--delta-positive) 12%, transparent); color: var(--delta-positive); }
+.jr-chip--warn { background: color-mix(in srgb, #b45309 14%, transparent); color: #92400e; }
+.jr-chip--bad  { background: color-mix(in srgb, var(--delta-negative) 12%, transparent); color: var(--delta-negative); }
+
+/* ---------- bar row: one geometry for every horizontal bar chart ---------- */
+.jr-bars { display: flex; flex-direction: column; gap: var(--row-gap); }
+.jr-bar { display: flex; align-items: center; gap: 12px; }
+.jr-bar__label { flex-shrink: 0; width: 8rem; overflow: hidden; text-overflow: ellipsis;
+  white-space: nowrap; font-size: var(--text-label); font-weight: var(--weight-medium); color: var(--foreground); }
+.jr-bar__track { position: relative; flex: 1; min-width: 0; height: var(--row-height);
+  overflow: hidden; border-radius: var(--radius-mark); background: var(--track); }
+.jr-bar__fill { height: 100%; border-radius: var(--radius-mark); background: var(--accent-ui); }
+.jr-bar__values { display: flex; flex-shrink: 0; align-items: baseline; justify-content: flex-end;
+  gap: 6px; width: 6rem; }
+.jr-bar__count { font-size: var(--text-body); font-weight: var(--weight-semibold);
+  color: var(--foreground); font-variant-numeric: tabular-nums; }
+.jr-bar__change { display: inline-flex; align-items: center; gap: 2px; font-size: var(--text-caption);
+  color: var(--muted); font-variant-numeric: tabular-nums; }
+.jr-bar__change--worst { font-weight: var(--weight-semibold); color: var(--delta-negative); }
+.jr-bar__note { flex-shrink: 0; width: 10rem; overflow: hidden; text-overflow: ellipsis;
+  white-space: nowrap; font-size: var(--text-caption); color: var(--muted); }
+
+/* ---------- empty ---------- */
+.jr-empty { padding: 24px 0; text-align: center; font-size: var(--text-body); color: var(--muted); }
+
+/* ---------- segmented control ---------- */
+.jr-segmented { display: inline-flex; gap: 2px; border-radius: var(--radius-control);
+  border: 1px solid var(--border-strong); padding: 2px; }
+.jr-segmented__option { border: 0; background: transparent; border-radius: 6px; cursor: pointer;
+  padding: 4px 10px; font-family: inherit; font-size: var(--text-caption);
+  font-weight: var(--weight-medium); color: var(--muted);
+  transition: color .15s, background-color .15s; }
+.jr-segmented__option:hover { color: var(--foreground); }
+.jr-segmented__option[aria-pressed="true"] { background: var(--foreground); color: var(--surface); }
+.jr-segmented__count { margin-left: 4px; opacity: .65; font-variant-numeric: tabular-nums; }
+
+/* ---------- info dot + tooltip ---------- */
+.jr-info { display: inline-flex; align-items: center; border-radius: var(--radius-pill);
+  color: var(--muted); cursor: help; }
+.jr-info:hover { color: var(--foreground); }
+.jr-tooltip { position: fixed; z-index: var(--z-tooltip); pointer-events: none;
+  max-width: 16rem; border-radius: var(--radius-control); background: #171717;
+  padding: 6px 10px; font-size: var(--text-caption); line-height: 1.4; color: #f5f5f5;
+  box-shadow: 0 10px 15px -3px rgb(0 0 0 / .2); }
+
+/* ---------- table ---------- */
+.jr-table { width: 100%; border-collapse: collapse; font-size: var(--text-body); }
+.jr-table th { border-bottom: 1px solid var(--border-strong); padding: 8px 12px;
+  text-align: left; font-size: var(--text-caption); font-weight: var(--weight-medium); color: var(--muted); }
+.jr-table td { border-bottom: 1px solid var(--border-row); padding: 12px; color: var(--foreground); }
+.jr-table td.jr-right, .jr-table th.jr-right { text-align: right; font-variant-numeric: tabular-nums; }
+.jr-table tbody tr:hover { background: rgb(0 0 0 / .02); }
+.jr-table tfoot td { border-top: 2px solid var(--border-strong); border-bottom: 0;
+  font-weight: var(--weight-semibold); }
+
+/* Always-visible horizontal scrollbar: overlay scrollbars auto-hide on some
+   platforms, removing the only cue that more columns exist. */
+.jr-scroll-x { overflow-x: scroll; scrollbar-width: thin;
+  scrollbar-color: rgb(120 120 120 / .55) transparent; }
+.jr-scroll-x::-webkit-scrollbar { height: 12px; }
+.jr-scroll-x::-webkit-scrollbar-track { background: rgb(120 120 120 / .08); border-radius: 9999px; }
+.jr-scroll-x::-webkit-scrollbar-thumb { background: rgb(120 120 120 / .55); border-radius: 9999px;
+  border: 3px solid transparent; background-clip: padding-box; }
+.jr-scroll-hint { display: flex; justify-content: flex-end; gap: 4px; margin-bottom: 6px;
+  font-size: var(--text-caption); color: var(--muted); }
+
+/* ---------- focus, one recipe everywhere ---------- */
+.jr-page :focus-visible { outline: 2px solid var(--accent-ui); outline-offset: 1px; border-radius: 4px; }
+
+/* ---------- motion ---------- */
+@keyframes jr-spin  { to { transform: rotate(360deg); } }
+@keyframes jr-pulse { 50% { opacity: .5; } }
+.jr-spin  { animation: jr-spin 1s linear infinite; }
+.jr-pulse { animation: jr-pulse 2s ease-in-out infinite; }
+@media (prefers-reduced-motion: reduce) {
+  .jr-spin, .jr-pulse { animation: none; }
+  .jr-page * { transition: none !important; }
+}
