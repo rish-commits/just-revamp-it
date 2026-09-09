@@ -1,0 +1,806 @@
+<title>Just Revamp It</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+
+<style>
+/* ─────────────────────────────────────────────────────────────
+   Just Revamp It — the handbook page.
+
+   The page uses the system it documents. Chrome is achromatic;
+   the only saturated colour is the token data being shown, and
+   green/red appear only as pass/fail. No cards: hairlines and
+   space do the separating, exactly as the system requires.
+   ───────────────────────────────────────────────────────────── */
+
+:root {
+  --ground:      #FAFAFB;
+  --panel:       #FFFFFF;
+  --sunk:        #F3F3F5;
+  --ink:         #15161A;
+  --ink-2:       #55595F;
+  --ink-3:       #6E727A;
+  --rule:        rgba(21,22,26,0.10);
+  --rule-strong: rgba(21,22,26,0.20);
+  --accent:      #7C3AED;
+  --accent-ink:  #6D28D9;
+  --ok:          #067A55;
+  --warn:        #8A5A00;
+  --bad:         #C0264A;
+  --ok-fill:     rgba(6,122,85,0.10);
+  --warn-fill:   rgba(138,90,0,0.10);
+  --bad-fill:    rgba(192,38,74,0.10);
+
+  --display: "Bricolage Grotesque", "Trebuchet MS", system-ui, sans-serif;
+  --body:    "IBM Plex Sans", system-ui, -apple-system, sans-serif;
+  --mono:    "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+
+  --measure: 68ch;
+  --rail: 8.5rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --ground:      #0B0B0D;
+    --panel:       #141519;
+    --sunk:        #1B1C21;
+    --ink:         #EDEDEF;
+    --ink-2:       #A2A6AD;
+    --ink-3:       #8B9098;
+    --rule:        rgba(255,255,255,0.12);
+    --rule-strong: rgba(255,255,255,0.22);
+    --accent:      #A78BFA;
+    --accent-ink:  #C4B5FD;
+    --ok:          #34C48D;
+    --warn:        #D9A441;
+    --bad:         #FF6B85;
+    --ok-fill:     rgba(52,196,141,0.14);
+    --warn-fill:   rgba(217,164,65,0.14);
+    --bad-fill:    rgba(255,107,133,0.14);
+  }
+}
+:root[data-theme="dark"] {
+  --ground:      #0B0B0D;
+  --panel:       #141519;
+  --sunk:        #1B1C21;
+  --ink:         #EDEDEF;
+  --ink-2:       #A2A6AD;
+  --ink-3:       #8B9098;
+  --rule:        rgba(255,255,255,0.12);
+  --rule-strong: rgba(255,255,255,0.22);
+  --accent:      #A78BFA;
+  --accent-ink:  #C4B5FD;
+  --ok:          #34C48D;
+  --warn:        #D9A441;
+  --bad:         #FF6B85;
+  --ok-fill:     rgba(52,196,141,0.14);
+  --warn-fill:   rgba(217,164,65,0.14);
+  --bad-fill:    rgba(255,107,133,0.14);
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--ground);
+  color: var(--ink);
+  font-family: var(--body);
+  font-size: 15px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+.wrap { max-width: 78rem; margin-inline: auto; padding: 0 1.5rem 6rem; }
+
+/* ── masthead ─────────────────────────────────────────────── */
+.mast { padding: 4.5rem 0 2rem; border-bottom: 2px solid var(--ink); }
+.mast__eyebrow {
+  font-family: var(--mono); font-size: 0.6875rem; font-weight: 500;
+  letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3);
+  display: flex; flex-wrap: wrap; gap: 0.5rem 1.25rem;
+}
+.mast__title {
+  font-family: var(--display); font-weight: 800;
+  font-size: clamp(2.75rem, 8vw, 5.5rem); line-height: 0.92;
+  letter-spacing: -0.035em; margin: 1.25rem 0 0; text-wrap: balance;
+}
+.mast__thesis {
+  max-width: var(--measure); margin: 1.25rem 0 0;
+  font-size: clamp(1.0625rem, 2vw, 1.3125rem); line-height: 1.45; color: var(--ink-2);
+}
+.mast__thesis strong { color: var(--ink); font-weight: 600; }
+
+/* ── section scaffolding ──────────────────────────────────── */
+.sec { display: grid; grid-template-columns: var(--rail) minmax(0, 1fr); gap: 2.5rem;
+       padding: 3.5rem 0; border-bottom: 1px solid var(--rule); }
+.sec__rail { position: sticky; top: 1.5rem; align-self: start; }
+.sec__num { font-family: var(--mono); font-size: 0.6875rem; font-weight: 600;
+            letter-spacing: 0.12em; color: var(--accent-ink); display: block; }
+.sec__label { font-family: var(--mono); font-size: 0.6875rem; letter-spacing: 0.1em;
+              text-transform: uppercase; color: var(--ink-3); display: block; margin-top: 0.35rem; }
+.sec__body { min-width: 0; }
+h2 { font-family: var(--display); font-weight: 700; font-size: clamp(1.5rem, 3vw, 2rem);
+     line-height: 1.1; letter-spacing: -0.02em; margin: 0 0 0.75rem; text-wrap: balance; }
+h3 { font-family: var(--display); font-weight: 700; font-size: 1.0625rem; letter-spacing: -0.01em;
+     margin: 2rem 0 0.5rem; }
+p { max-width: var(--measure); margin: 0 0 1rem; }
+.lead { font-size: 1.0625rem; color: var(--ink-2); }
+a { color: var(--accent-ink); text-underline-offset: 2px; text-decoration-thickness: 1px; }
+a:hover { text-decoration-thickness: 2px; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 3px; }
+code, .mono { font-family: var(--mono); font-size: 0.875em; }
+.num { font-variant-numeric: tabular-nums; }
+
+/* ── the deriver ──────────────────────────────────────────── */
+.deriver { border: 1px solid var(--rule-strong); background: var(--panel); }
+.deriver__head { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem 1.25rem;
+  padding: 1rem 1.25rem; border-bottom: 1px solid var(--rule); }
+.deriver__label { font-family: var(--mono); font-size: 0.6875rem; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--ink-3); }
+.swatchbtn { width: 2rem; height: 2rem; border: 1px solid var(--rule-strong); padding: 0;
+  cursor: pointer; background: none; }
+input[type="text"].hexin {
+  font-family: var(--mono); font-size: 0.9375rem; width: 9ch; padding: 0.4rem 0.6rem;
+  border: 1px solid var(--rule-strong); background: var(--ground); color: var(--ink);
+  text-transform: lowercase;
+}
+.presets { display: flex; flex-wrap: wrap; gap: 0.375rem; margin-left: auto; }
+.preset { font-family: var(--mono); font-size: 0.6875rem; padding: 0.3rem 0.55rem; cursor: pointer;
+  border: 1px solid var(--rule); background: var(--ground); color: var(--ink-2); }
+.preset:hover { border-color: var(--rule-strong); color: var(--ink); }
+.preset span { display: inline-block; width: 0.55rem; height: 0.55rem; margin-right: 0.35rem;
+  vertical-align: -1px; }
+
+.ramp { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); }
+.ramp__cell { padding: 1.25rem 0.75rem 1rem; text-align: center; font-family: var(--mono);
+  font-size: 0.6875rem; line-height: 1.5; }
+.ramp__hex { display: block; font-weight: 600; }
+.ramp__ratio { display: block; opacity: 0.75; }
+
+.readout { display: grid; grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+  border-top: 1px solid var(--rule); }
+.readout > div { padding: 0.9rem 1.25rem; border-right: 1px solid var(--rule); }
+.readout > div:last-child { border-right: 0; }
+.readout dt { font-family: var(--mono); font-size: 0.625rem; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--ink-3); margin: 0; }
+.readout dd { margin: 0.3rem 0 0; font-family: var(--mono); font-size: 0.9375rem;
+  font-variant-numeric: tabular-nums; }
+
+.checks { border-top: 1px solid var(--rule); padding: 0.5rem 0; }
+.check { display: grid; grid-template-columns: 3.5rem 1fr; gap: 0.75rem; align-items: baseline;
+  padding: 0.4rem 1.25rem; }
+.tag { font-family: var(--mono); font-size: 0.625rem; font-weight: 600; letter-spacing: 0.08em;
+  text-align: center; padding: 0.15rem 0; }
+.tag--ok { color: var(--ok); background: var(--ok-fill); }
+.tag--warn { color: var(--warn); background: var(--warn-fill); }
+.tag--bad { color: var(--bad); background: var(--bad-fill); }
+.check__msg { font-size: 0.875rem; color: var(--ink-2); }
+.check__msg em { font-style: normal; color: var(--ink); }
+.verdict { padding: 0.9rem 1.25rem; border-top: 1px solid var(--rule); font-size: 0.875rem;
+  color: var(--ink-2); }
+
+/* ── principles ───────────────────────────────────────────── */
+.principles { display: grid; gap: 0; margin: 0; padding: 0; list-style: none; }
+.principle { display: grid; grid-template-columns: 2rem minmax(0,1fr); gap: 1rem;
+  padding: 1.25rem 0; border-top: 1px solid var(--rule); }
+.principle:last-child { border-bottom: 1px solid var(--rule); }
+.principle__n { font-family: var(--mono); font-size: 0.75rem; color: var(--ink-3);
+  font-variant-numeric: tabular-nums; padding-top: 0.2rem; }
+.principle h3 { margin: 0 0 0.25rem; font-size: 1rem; }
+.principle p { margin: 0; color: var(--ink-2); font-size: 0.9375rem; }
+
+/* ── evidence tiles ───────────────────────────────────────── */
+.tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+  border: 1px solid var(--rule-strong); }
+.tile { padding: 1.25rem; border-right: 1px solid var(--rule); }
+.tile:last-child { border-right: 0; }
+.tile__label { font-family: var(--mono); font-size: 0.625rem; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--ink-3); }
+.tile__value { font-family: var(--display); font-weight: 700; font-size: 2.25rem;
+  line-height: 1; letter-spacing: -0.02em; margin: 0.5rem 0 0; font-variant-numeric: tabular-nums; }
+.tile__note { font-size: 0.8125rem; color: var(--ink-2); margin: 0.5rem 0 0; }
+
+/* ── do / don't ───────────────────────────────────────────── */
+.pairs { display: grid; gap: 1.5rem; }
+.pair { border-top: 1px solid var(--rule); padding-top: 1.25rem; }
+.pair__q { font-family: var(--display); font-weight: 700; font-size: 1rem; margin: 0 0 0.75rem; }
+.pair__cols { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; }
+.pair__col { border-left: 2px solid var(--rule-strong); padding-left: 0.9rem; }
+.pair__col--no { border-left-color: var(--bad); }
+.pair__col--yes { border-left-color: var(--ok); }
+.pair__tag { font-family: var(--mono); font-size: 0.625rem; letter-spacing: 0.1em;
+  text-transform: uppercase; display: block; margin-bottom: 0.35rem; }
+.pair__col--no .pair__tag { color: var(--bad); }
+.pair__col--yes .pair__tag { color: var(--ok); }
+.pair__col p { margin: 0; font-size: 0.875rem; color: var(--ink-2); max-width: none; }
+.pair__col p + p { margin-top: 0.5rem; }
+.pair__demo { font-family: var(--mono); font-size: 0.9375rem; margin-bottom: 0.5rem;
+  font-variant-numeric: tabular-nums; color: var(--ink); }
+
+/* ── chapter map ──────────────────────────────────────────── */
+.map { display: grid; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); gap: 1.75rem; }
+.map__group h3 { margin: 0 0 0.5rem; font-size: 0.8125rem; font-family: var(--mono);
+  font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-3); }
+.map__list { list-style: none; margin: 0; padding: 0; }
+.map__list li { display: flex; justify-content: space-between; gap: 0.75rem;
+  padding: 0.3rem 0; border-bottom: 1px solid var(--rule); font-size: 0.875rem; }
+.map__list b { font-weight: 500; }
+.map__list span { font-family: var(--mono); font-size: 0.6875rem; color: var(--ink-3);
+  white-space: nowrap; font-variant-numeric: tabular-nums; }
+
+/* ── install ──────────────────────────────────────────────── */
+pre { font-family: var(--mono); font-size: 0.8125rem; line-height: 1.7; background: var(--sunk);
+  border: 1px solid var(--rule); padding: 1rem 1.25rem; overflow-x: auto; margin: 0 0 1rem; }
+pre .c { color: var(--ink-3); }
+
+/* ── provenance ───────────────────────────────────────────── */
+.note { border-left: 2px solid var(--warn); background: var(--warn-fill);
+  padding: 1rem 1.25rem; max-width: var(--measure); }
+.note p { margin: 0; font-size: 0.9375rem; }
+.note p + p { margin-top: 0.6rem; }
+
+footer { padding: 3rem 0 0; font-family: var(--mono); font-size: 0.6875rem;
+  letter-spacing: 0.06em; color: var(--ink-3); display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem; }
+
+@media (max-width: 860px) {
+  .sec { grid-template-columns: 1fr; gap: 1.25rem; padding: 2.5rem 0; }
+  .sec__rail { position: static; display: flex; gap: 0.75rem; align-items: baseline; }
+  .sec__label { margin-top: 0; }
+  .pair__cols { grid-template-columns: 1fr; }
+  .ramp { grid-template-columns: repeat(5, 1fr); }
+  .ramp__cell { padding: 0.9rem 0.25rem; font-size: 0.5625rem; }
+  .presets { margin-left: 0; width: 100%; }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+</style>
+
+<div class="wrap">
+
+  <header class="mast">
+    <div class="mast__eyebrow">
+      <span>Dashboard design system</span>
+      <span>v0.3.0</span>
+      <span>Apache-2.0</span>
+      <span>30 chapters · 3 scripts · 1 kit</span>
+    </div>
+    <h1 class="mast__title">Just Revamp It</h1>
+    <p class="mast__thesis">
+      A dashboard is an instrument, and it is judged on one thing: whether a reader reaches a
+      <strong>correct</strong> conclusion, fast, and knows how much to trust it. Every rule here
+      serves that, and the ones that can be measured are measured rather than asserted.
+    </p>
+  </header>
+
+  <!-- ── 01 the deriver ─────────────────────────────────── -->
+  <section class="sec">
+    <div class="sec__rail"><span class="sec__num">01</span><span class="sec__label">Brand</span></div>
+    <div class="sec__body">
+      <h2>One accent in. A validated system out.</h2>
+      <p class="lead">
+        A handbook that says "swap the accent" is making a promise it cannot keep. Brands do not hand
+        you a hue that happens to stay legible at every step of a sequential ramp. This derives the
+        whole system from one colour and refuses to emit one that fails its own rules.
+      </p>
+      <p>Try a hostile one. Green collides with the delta colour every dashboard reserves for
+        improvement. Yellow is too pale to carry a 2px line on a near-white canvas.</p>
+
+      <div class="deriver">
+        <div class="deriver__head">
+          <label class="deriver__label" for="hex">Brand accent</label>
+          <button class="swatchbtn" id="sw" type="button" aria-hidden="true" tabindex="-1"></button>
+          <input class="hexin" id="hex" type="text" value="#7c3aed" spellcheck="false"
+                 aria-label="Brand accent hex colour" maxlength="7">
+          <div class="presets" id="presets"></div>
+        </div>
+        <div class="ramp" id="ramp"></div>
+        <dl class="readout" id="readout"></dl>
+        <div class="checks" id="checks"></div>
+        <p class="verdict" id="verdict"></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 02 principles ──────────────────────────────────── -->
+  <section class="sec">
+    <div class="sec__rail"><span class="sec__num">02</span><span class="sec__label">Principles</span></div>
+    <div class="sec__body">
+      <h2>Four things, and only one of them is visual</h2>
+      <ol class="principles">
+        <li class="principle">
+          <span class="principle__n">01</span>
+          <div>
+            <h3>Restraint</h3>
+            <p>Good dashboards make few decisions and repeat them. A core of about five type sizes,
+              four spacing steps, one accent. Sprawl is the most common cause of a dashboard that
+              looks off while every individual choice is defensible.</p>
+          </div>
+        </li>
+        <li class="principle">
+          <span class="principle__n">02</span>
+          <div>
+            <h3>Judgment first</h3>
+            <p>Lead with the number and its verdict, then the detail. A surface that requires
+              interpretation before it yields a conclusion has failed its reader.</p>
+          </div>
+        </li>
+        <li class="principle">
+          <span class="principle__n">03</span>
+          <div>
+            <h3>Light by default</h3>
+            <p>Dashboards are projected in lit rooms, screenshotted into light decks, and printed.
+              Light grounds also give a sequential ramp more usable range, since every encoding here
+              is a background fill. Dark is a narrow exception, not a preference.</p>
+          </div>
+        </li>
+        <li class="principle">
+          <span class="principle__n">04</span>
+          <div>
+            <h3>Earned trust</h3>
+            <p>Name the population every number counts. Define terms on the surface, not in a deck.
+              Say what the data cannot say rather than drawing a clean shape that implies precision
+              the source does not have. A dashboard caught overstating once is never fully believed
+              again.</p>
+          </div>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ── 03 measured ────────────────────────────────────── -->
+  <section class="sec">
+    <div class="sec__rail"><span class="sec__num">03</span><span class="sec__label">Measured</span></div>
+    <div class="sec__body">
+      <h2>Rules that can be checked, are</h2>
+      <p class="lead">Three scripts, no dependencies. Prose gets argued about; a failing exit code
+        does not.</p>
+
+      <div class="tiles">
+        <div class="tile">
+          <div class="tile__label">palette.mjs</div>
+          <p class="tile__value">7</p>
+          <p class="tile__note">validations per accent, in both themes: ramp legibility, adjacent
+            separability, colour-vision collapse, delta collision, canvas contrast, hero ink, heat
+            ceiling.</p>
+        </div>
+        <div class="tile">
+          <div class="tile__label">vocabulary.mjs</div>
+          <p class="tile__value">0–100</p>
+          <p class="tile__note">restraint score. Grades the <em>core</em> vocabulary, the smallest
+            set covering 90% of uses, so a disciplined system with a tail is not scored like an
+            evenly-sprawling one.</p>
+        </div>
+        <div class="tile">
+          <div class="tile__label">scan.mjs</div>
+          <p class="tile__value">8</p>
+          <p class="tile__note">anti-patterns that make a reader draw a wrong conclusion: truncated
+            baselines, invisible small values, missing tabular figures, undefined metrics.</p>
+        </div>
+      </div>
+
+      <h3>What the restraint metric found</h3>
+      <p>Run against the production dashboard the system was extracted from: a core of four type
+        sizes carrying 91% of uses, with a six-value tail. That distinction is the whole point.
+        Counting distinct values alone would have scored a disciplined system as chaos.</p>
+    </div>
+  </section>
+
+  <!-- ── 04 rules ───────────────────────────────────────── -->
+  <section class="sec">
+    <div class="sec__rail"><span class="sec__num">04</span><span class="sec__label">Rules</span></div>
+    <div class="sec__body">
+      <h2>Six that change what people believe</h2>
+      <p class="lead">Not style preferences. Each of these changes the conclusion a reader draws.</p>
+
+      <div class="pairs">
+        <div class="pair">
+          <p class="pair__q">Growth from a zero baseline</p>
+          <div class="pair__cols">
+            <div class="pair__col pair__col--no">
+              <span class="pair__tag">Reports fake growth</span>
+              <p class="pair__demo">↑ 100%</p>
+              <p>Last period was zero. There is no meaningful percentage change from nothing, and
+                the number is spectacular by construction.</p>
+            </div>
+            <div class="pair__col pair__col--yes">
+              <span class="pair__tag">Renders nothing</span>
+              <p class="pair__demo">14 <span style="color:var(--ink-3)">· first period</span></p>
+              <p>The delta is null and the badge does not appear. The kit enforces this: the
+                component returns nothing rather than inventing a percentage.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="pair">
+          <p class="pair__q">A funnel step worth 0.3% of the first</p>
+          <div class="pair__cols">
+            <div class="pair__col pair__col--no">
+              <span class="pair__tag">Reads as absent</span>
+              <p>A proportional width renders a real value as nothing at all, so a reader concludes
+                the step has no users rather than few.</p>
+            </div>
+            <div class="pair__col pair__col--yes">
+              <span class="pair__tag">Floored, and still true</span>
+              <p>Non-zero fills floor at a visible minimum. A true zero draws no bar at all, because
+                those are different statements and must look different.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="pair">
+          <p class="pair__q">A step that did not move</p>
+          <div class="pair__cols">
+            <div class="pair__col pair__col--no">
+              <span class="pair__tag">Silent blank</span>
+              <p>Suppressing the change when it is zero looks identical to failing to compute it. A
+                reader cannot tell flat-by-design from broken.</p>
+            </div>
+            <div class="pair__col pair__col--yes">
+              <span class="pair__tag">Prints it</span>
+              <p class="pair__demo">0%</p>
+              <p>And a step above 100% is shown, not clamped. It means the population is not a
+                subset of the one above, which is real information about your instrumentation.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="pair">
+          <p class="pair__q">Which step is leaking</p>
+          <div class="pair__cols">
+            <div class="pair__col pair__col--no">
+              <span class="pair__tag">Largest percentage drop</span>
+              <p>Picks a trivial step off a tiny base and sends the team to fix a problem affecting
+                nine people while ten thousand leak elsewhere.</p>
+            </div>
+            <div class="pair__col pair__col--yes">
+              <span class="pair__tag">Largest absolute drop</span>
+              <p>Exactly one step flagged, in the change text only, never by recolouring the bar.
+                Steps whose conversion is not a true per-user rate are excluded entirely.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="pair">
+          <p class="pair__q">A metric with no population</p>
+          <div class="pair__cols">
+            <div class="pair__col pair__col--no">
+              <span class="pair__tag">Two readers, two numbers</span>
+              <p class="pair__demo">Active users &nbsp;<span style="color:var(--ink-3)">1,204</span></p>
+              <p>Active out of whom? Everyone in the database, everyone real, or everyone who
+                finished onboarding? Each is a different figure.</p>
+            </div>
+            <div class="pair__col pair__col--yes">
+              <span class="pair__tag">States what it counts</span>
+              <p class="pair__demo">Active, onboarded &nbsp;<span style="color:var(--ink-3)">1,204</span></p>
+              <p>A number without its population is a wrong number. The denominator of a rate is a
+                population too, and it is usually the one people get wrong.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="pair">
+          <p class="pair__q">Direction carried by colour</p>
+          <div class="pair__cols">
+            <div class="pair__col pair__col--no">
+              <span class="pair__tag">Says nothing to 8% of men</span>
+              <p>A coloured magnitude with a decorative arrow carries no direction at all for a
+                reader with red-green colour blindness, and green and red are the classic collision.</p>
+            </div>
+            <div class="pair__col pair__col--yes">
+              <span class="pair__tag">Glyph and text too</span>
+              <p>No fact is carried by hue alone. Direction gets a glyph and a word in the accessible
+                name; status gets a word; category gets a direct label.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 05 chapters ────────────────────────────────────── -->
+  <section class="sec">
+    <div class="sec__rail"><span class="sec__num">05</span><span class="sec__label">Contents</span></div>
+    <div class="sec__body">
+      <h2>Thirty chapters</h2>
+      <p class="lead">Loaded on demand, never all at once. The router costs about 250 tokens; a
+        chapter loads only when a command needs it.</p>
+      <div class="map">
+        <div class="map__group">
+          <h3>Commands</h3>
+          <ul class="map__list">
+            <li><b>audit</b><span>measure</span></li>
+            <li><b>critique</b><span>judge</span></li>
+            <li><b>revamp</b><span>apply</span></li>
+            <li><b>shape</b><span>plan</span></li>
+            <li><b>brand</b><span>onboard</span></li>
+            <li><b>document</b><span>emit spec</span></li>
+          </ul>
+        </div>
+        <div class="map__group">
+          <h3>Data representation</h3>
+          <ul class="map__list">
+            <li><b>choosing</b><span>which form</span></li>
+            <li><b>charts</b><span>construction</span></li>
+            <li><b>chart-types</b><span>beyond core</span></li>
+            <li><b>funnel</b><span>drop-off</span></li>
+            <li><b>targets</b><span>vs forecast</span></li>
+            <li><b>numbers</b><span>format</span></li>
+            <li><b>scale</b><span>volume</span></li>
+            <li><b>tables</b><span>dense</span></li>
+          </ul>
+        </div>
+        <div class="map__group">
+          <h3>Trust</h3>
+          <ul class="map__list">
+            <li><b>trust</b><span>the layer</span></li>
+            <li><b>naming</b><span>metrics</span></li>
+            <li><b>accessibility</b><span>WCAG 2.2 AA</span></li>
+            <li><b>locale</b><span>currency, tz</span></li>
+          </ul>
+        </div>
+        <div class="map__group">
+          <h3>Form</h3>
+          <ul class="map__list">
+            <li><b>color</b><span>encoding</span></li>
+            <li><b>typography</b><span>tokens</span></li>
+            <li><b>layout</b><span>IA</span></li>
+            <li><b>interaction</b><span>motion</span></li>
+            <li><b>theming</b><span>light first</span></li>
+          </ul>
+        </div>
+        <div class="map__group">
+          <h3>Beyond the screen</h3>
+          <ul class="map__list">
+            <li><b>broadcast</b><span>Slack, email</span></li>
+            <li><b>output</b><span>print, CSV</span></li>
+            <li><b>performance</b><span>budgets</span></li>
+          </ul>
+        </div>
+        <div class="map__group">
+          <h3>Operating it</h3>
+          <ul class="map__list">
+            <li><b>governance</b><span>who decides</span></li>
+            <li><b>kit</b><span>shipped code</span></li>
+            <li><b>craft-floor</b><span>minimum bar</span></li>
+            <li><b>with-impeccable</b><span>composition</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 06 install ─────────────────────────────────────── -->
+  <section class="sec">
+    <div class="sec__rail"><span class="sec__num">06</span><span class="sec__label">Install</span></div>
+    <div class="sec__body">
+      <h2>Two lines</h2>
+<pre><span class="c">/</span>plugin marketplace add rish-commits/just-revamp-it
+<span class="c">/</span>plugin install just-revamp-it@just-revamp-it</pre>
+      <p>Then <code>/just-revamp-it audit</code> in any repo. With no argument it audits, then offers
+        critique and revamp.</p>
+      <h3>Or run the scripts directly</h3>
+<pre>node scripts/palette.mjs "#7c3aed" --css     <span class="c"># derive + validate tokens</span>
+node scripts/vocabulary.mjs ./src            <span class="c"># restraint score</span>
+node scripts/scan.mjs ./src                  <span class="c"># anti-patterns</span></pre>
+      <p>Plain Node, no dependencies. <code>palette.mjs</code> exits non-zero on failure, so it drops
+        straight into CI.</p>
+    </div>
+  </section>
+
+  <!-- ── 07 provenance ──────────────────────────────────── -->
+  <section class="sec" style="border-bottom:0">
+    <div class="sec__rail"><span class="sec__num">07</span><span class="sec__label">Provenance</span></div>
+    <div class="sec__body">
+      <h2>Where these rules came from</h2>
+      <div class="note">
+        <p>Extracted from <strong>one</strong> production product-analytics dashboard: a few hundred
+          users, one timezone, one currency, one accent hue, one export target, short funnels, and a
+          deliberately single-theme interface.</p>
+        <p>Chapters covering what that dashboard shipped are evidenced by practice. Chapters covering
+          what it never had to solve are reasoned from the same grammar: sound, but unproven. Both
+          are marked.</p>
+        <p>Do not mistake a single-instance decision for validated law. When a rule does not survive
+          contact with real data, that is information the system owner needs, not a reason to quietly
+          drop it.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <span>Just Revamp It v0.3.0</span>
+    <span>Apache-2.0</span>
+    <span>github.com/rish-commits/just-revamp-it</span>
+    <span>This page uses the system it documents</span>
+  </footer>
+</div>
+
+<script>
+/* ── OKLCH colour engine, ported from scripts/lib/color.mjs ────────────────
+   The page runs the real validator, not a mock of it. */
+const toLin = c => c <= 0.04045 ? c/12.92 : Math.pow((c+0.055)/1.055, 2.4);
+const toGam = c => c <= 0.0031308 ? c*12.92 : 1.055*Math.pow(c, 1/2.4) - 0.055;
+
+function parseHex(h) {
+  const s = String(h).trim().replace(/^#/, '');
+  const f = s.length === 3 ? s.replace(/(.)/g, '$1$1') : s;
+  if (!/^[0-9a-fA-F]{6}$/.test(f)) return null;
+  const n = parseInt(f, 16);
+  return { r:(n>>16)&255, g:(n>>8)&255, b:n&255 };
+}
+const toHex = ({r,g,b}) => '#' + [r,g,b].map(v =>
+  Math.max(0, Math.min(255, Math.round(v))).toString(16).padStart(2,'0')).join('');
+
+function rgbToOklab({r,g,b}) {
+  const lr=toLin(r/255), lg=toLin(g/255), lb=toLin(b/255);
+  const l=Math.cbrt(0.4122214708*lr+0.5363325363*lg+0.0514459929*lb);
+  const m=Math.cbrt(0.2119034982*lr+0.6806995451*lg+0.1073969566*lb);
+  const s=Math.cbrt(0.0883024619*lr+0.2817188376*lg+0.6299787005*lb);
+  return { L:0.2104542553*l+0.7936177850*m-0.0040720468*s,
+           a:1.9779984951*l-2.4285922050*m+0.4505937099*s,
+           b:0.0259040371*l+0.7827717662*m-0.8086757660*s };
+}
+function oklabToRgb({L,a,b}) {
+  const l=(L+0.3963377774*a+0.2158037573*b)**3;
+  const m=(L-0.1055613458*a-0.0638541728*b)**3;
+  const s=(L-0.0894841775*a-1.2914855480*b)**3;
+  return { r:255*toGam(4.0767416621*l-3.3077115913*m+0.2309699292*s),
+           g:255*toGam(-1.2684380046*l+2.6097574011*m-0.3413193965*s),
+           b:255*toGam(-0.0041960863*l-0.7034186147*m+1.7076147010*s) };
+}
+const toLch = ({L,a,b}) => ({ L, C:Math.hypot(a,b), h:((Math.atan2(b,a)*180/Math.PI)+360)%360 });
+const toLab = ({L,C,h}) => ({ L, a:C*Math.cos(h*Math.PI/180), b:C*Math.sin(h*Math.PI/180) });
+const hexToLch = h => toLch(rgbToOklab(parseHex(h)));
+const inGamut = ({r,g,b}) => r>=-0.5&&r<=255.5&&g>=-0.5&&g<=255.5&&b>=-0.5&&b<=255.5;
+
+function lchToHex({L,C,h}) {
+  if (inGamut(oklabToRgb(toLab({L,C,h})))) return toHex(oklabToRgb(toLab({L,C,h})));
+  let lo=0, hi=C;
+  for (let i=0;i<24;i++){ const mid=(lo+hi)/2;
+    if (inGamut(oklabToRgb(toLab({L,C:mid,h})))) lo=mid; else hi=mid; }
+  return toHex(oklabToRgb(toLab({L,C:lo,h})));
+}
+function lum(hex){ const {r,g,b}=parseHex(hex);
+  return 0.2126*toLin(r/255)+0.7152*toLin(g/255)+0.0722*toLin(b/255); }
+const contrast = (a,b) => { const la=lum(a), lb=lum(b);
+  return (Math.max(la,lb)+0.05)/(Math.min(la,lb)+0.05); };
+const inkOn = (h, d='#171717', l='#ffffff') => contrast(h,d) >= contrast(h,l) ? d : l;
+function composite(hex, alpha, ground='#ffffff'){
+  const f=parseHex(hex), g=parseHex(ground);
+  return toHex({ r:f.r*alpha+g.r*(1-alpha), g:f.g*alpha+g.g*(1-alpha), b:f.b*alpha+g.b*(1-alpha) });
+}
+const CVD = {
+  protanopia:[0.152286,1.052583,-0.204868,0.114503,0.786281,0.099216,-0.003882,-0.048116,1.051998],
+  deuteranopia:[0.367322,0.860646,-0.227968,0.280085,0.672501,0.047413,-0.011820,0.042940,0.968881],
+  tritanopia:[1.255528,-0.076749,-0.178779,-0.078411,0.930809,0.147602,0.004733,0.691367,0.303900]
+};
+function simulate(hex, kind){ const m=CVD[kind], {r,g,b}=parseHex(hex);
+  const lr=toLin(r/255), lg=toLin(g/255), lb=toLin(b/255);
+  const cl=v=>Math.max(0,Math.min(1,v));
+  return toHex({ r:255*toGam(cl(m[0]*lr+m[1]*lg+m[2]*lb)),
+                 g:255*toGam(cl(m[3]*lr+m[4]*lg+m[5]*lb)),
+                 b:255*toGam(cl(m[6]*lr+m[7]*lg+m[8]*lb)) }); }
+function dE(a,b){ const x=rgbToOklab(parseHex(a)), y=rgbToOklab(parseHex(b));
+  return Math.hypot(x.L-y.L, x.a-y.a, x.b-y.b); }
+
+/* ── the system ─────────────────────────────────────────────── */
+const RAMP_L=[0.491,0.541,0.606,0.709,0.811], RAMP_C=[0.98,1.00,0.89,0.64,0.41];
+const AA=4.5, AA_LG=3.0;
+const DELTA={ positive:'#059669', negative:'#e11d48' };
+const CANVAS='#fafafa', SURFACE='#ffffff', FG='#171717';
+
+function derive(accent){
+  const {L,C,h}=hexToLch(accent);
+  const ramp=RAMP_L.map((l,i)=>lchToHex({L:l,C:C*RAMP_C[i],h}));
+  const ok = x => contrast(x,CANVAS)>=AA_LG && contrast(x,'#ffffff')>=AA;
+  let accentUi=accent;
+  if(!ok(accent)){ for(let l=L;l>=0.2;l-=0.01){ const c=lchToHex({L:l,C,h}); if(ok(c)){accentUi=c;break;} } }
+  let ceil=1;
+  for(let a=0.02;a<=1.0001;a+=0.01){ if(contrast(composite(accent,a,SURFACE),FG)<AA){ ceil=a-0.01; break; } }
+  return { accent, accentUi, derived: accentUi.toLowerCase()!==accent.toLowerCase(),
+           ramp, heatMax: Math.max(0.2, Math.round((ceil-0.04)*100)/100), L, C, h };
+}
+
+function validate(s){
+  const out=[];
+  const pinched = s.ramp.map((c,i)=>({i:i+1, r:contrast(c,inkOn(c))})).filter(x=>x.r<AA);
+  out.push(pinched.length
+    ? {lvl:'warn', msg:`Stop ${pinched.map(p=>`<em>${p.i}</em> at ${p.r.toFixed(2)}:1`).join(', ')} cannot carry body text. Fill-only: labels go outside the shape.`}
+    : {lvl:'ok', msg:'All five stops carry body text at 4.5:1 or better.'});
+
+  let near=[];
+  for(let i=1;i<s.ramp.length;i++) if(dE(s.ramp[i-1],s.ramp[i])<0.045) near.push(`${i}→${i+1}`);
+  out.push(near.length
+    ? {lvl:'warn', msg:`Adjacent stops too close: ${near.join(', ')}. The ramp encodes less than it appears to.`}
+    : {lvl:'ok', msg:'Adjacent ramp stops are perceptually distinct.'});
+
+  const merged=[];
+  for(const k of ['protanopia','deuteranopia','tritanopia']){
+    for(let i=1;i<s.ramp.length;i++)
+      if(dE(simulate(s.ramp[i-1],k),simulate(s.ramp[i],k))<0.040){ merged.push(k); break; }
+  }
+  out.push(merged.length
+    ? {lvl:'warn', msg:`Stops merge under ${merged.join(', ')}. Keep the lightness ladder; never encode by hue alone.`}
+    : {lvl:'ok', msg:'Ramp stays separable under protanopia, deuteranopia and tritanopia.'});
+
+  let collision=null;
+  for(const [name,hex] of Object.entries(DELTA)){
+    const d=dE(s.accent,hex);
+    if(d<0.13) collision={name,hex,d};
+  }
+  out.push(collision
+    ? {lvl:'bad', msg:`Accent is too close to the <em>${collision.name}</em> delta colour ${collision.hex} (ΔE ${collision.d.toFixed(3)}). This brand cannot use green and red for change <em>and</em> this accent.`}
+    : {lvl:'ok', msg:'Accent is clearly distinct from both delta colours.'});
+
+  const onCanvas=contrast(s.accent,CANVAS);
+  out.push(s.derived
+    ? {lvl:'warn', msg:`Brand accent is ${onCanvas.toFixed(2)}:1 on the canvas, too pale for bars and active states. Keep it for identity; UI uses the derived <em>${s.accentUi}</em>, same hue.`}
+    : {lvl:'ok', msg:`Accent reads on the canvas at ${onCanvas.toFixed(2)}:1.`});
+
+  const hero=contrast(s.accentUi,'#ffffff');
+  out.push(hero<AA
+    ? {lvl:'bad', msg:`White text on the hero fill is ${hero.toFixed(2)}:1 even after darkening. Use dark ink on a pale tint instead of a filled hero.`}
+    : {lvl:'ok', msg:`White headline text on the hero clears AA at ${hero.toFixed(2)}:1.`});
+
+  return out;
+}
+
+/* ── render ─────────────────────────────────────────────────── */
+const $ = id => document.getElementById(id);
+const PRESETS = [
+  ['#7c3aed','Violet'], ['#0ea5e9','Sky'], ['#059669','Green'],
+  ['#dc2626','Red'], ['#facc15','Yellow'], ['#1e3a8a','Navy']
+];
+
+$('presets').innerHTML = PRESETS.map(([hex,name]) =>
+  `<button class="preset" type="button" data-hex="${hex}"><span style="background:${hex}"></span>${name}</button>`
+).join('');
+$('presets').addEventListener('click', e => {
+  const b = e.target.closest('.preset'); if(!b) return;
+  $('hex').value = b.dataset.hex; render();
+});
+
+function render(){
+  const raw = $('hex').value.trim();
+  const parsed = parseHex(raw);
+  if(!parsed){
+    $('verdict').innerHTML = '<span style="color:var(--bad)">Not a hex colour.</span> Try six digits, like #7c3aed.';
+    return;
+  }
+  const hex = toHex(parsed);
+  const s = derive(hex);
+  const checks = validate(s);
+  $('sw').style.background = hex;
+
+  $('ramp').innerHTML = s.ramp.map((c,i) => {
+    const ink = inkOn(c), r = contrast(c, ink);
+    return `<div class="ramp__cell" style="background:${c};color:${ink}">
+      <span class="ramp__hex">${c}</span>
+      <span class="ramp__ratio num">${r.toFixed(2)}:1</span>
+    </div>`;
+  }).join('');
+
+  $('readout').innerHTML = `
+    <div><dt>Working colour</dt><dd style="color:${s.accentUi}">${s.accentUi}${s.derived?' *':''}</dd></div>
+    <div><dt>Heat ceiling</dt><dd>α ${s.heatMax.toFixed(2)}</dd></div>
+    <div><dt>Lightness</dt><dd>${s.L.toFixed(3)}</dd></div>
+    <div><dt>Chroma</dt><dd>${s.C.toFixed(3)}</dd></div>
+    <div><dt>Hue</dt><dd>${s.h.toFixed(1)}°</dd></div>`;
+
+  const TAG = { ok:['tag--ok','PASS'], warn:['tag--warn','WARN'], bad:['tag--bad','FAIL'] };
+  $('checks').innerHTML = checks.map(c => {
+    const [cls,label] = TAG[c.lvl];
+    return `<div class="check"><span class="tag ${cls}">${label}</span>
+      <span class="check__msg">${c.msg}</span></div>`;
+  }).join('');
+
+  const fails = checks.filter(c=>c.lvl==='bad').length;
+  const warns = checks.filter(c=>c.lvl==='warn').length;
+  $('verdict').innerHTML = fails
+    ? `<strong style="color:var(--bad)">Not usable as-is.</strong> ${fails} failure${fails>1?'s':''}${warns?` and ${warns} warning${warns>1?'s':''}`:''}. A failure needs a human decision, not a workaround.`
+    : warns
+      ? `<strong style="color:var(--warn)">Usable, with ${warns} warning${warns>1?'s':''}.</strong> Each names the constraint it puts on the design.`
+      : `<strong style="color:var(--ok)">Clean.</strong> This accent is safe to ship in both themes.`;
+}
+
+$('hex').addEventListener('input', render);
+render();
+</script>

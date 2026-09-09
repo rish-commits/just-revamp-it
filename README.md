@@ -10,6 +10,15 @@ It is brand-neutral and multi-brand by design. A brand supplies one accent; the
 full colour system is derived and validated from it, so a team cannot accidentally
 ship an illegible ramp or a delta colour that collides with its own identity.
 
+## The handbook page
+
+A rendered version for people who want to look at the system rather than have an
+agent use it, with a live accent deriver that runs the real validator in the
+browser: <https://claude.ai/code/artifact/91aa4b92-ecfd-42a6-8b99-a3bb73a98d1a>
+
+Source at [`docs/handbook.html`](docs/handbook.html). Republish it from that file
+to update the same URL.
+
 ## Install
 
 ```
