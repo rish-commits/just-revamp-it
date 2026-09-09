@@ -120,6 +120,7 @@ Reference chapters, loaded by the commands above rather than invoked directly:
 | [reference/naming.md](reference/naming.md) | Metric naming grammar, title voice, copy standards, units |
 | [reference/governance.md](reference/governance.md) | Ownership, exceptions, review checklist, migration, enforcement |
 | [reference/kit.md](reference/kit.md) | Shipped tokens, styles, components and starter under `assets/` |
+| [reference/with-impeccable.md](reference/with-impeccable.md) | Composing with a general craft skill, and where the advice conflicts |
 | [reference/craft-floor.md](reference/craft-floor.md) | General quality floor when no craft skill is present |
 
 Routing:
@@ -129,9 +130,11 @@ Routing:
 - **Explicit or implied command:** load its reference and follow it. Ask once if two fit.
 - **New dashboard, nothing built yet:** `shape` first. Never start with colour.
 - **General frontend craft** outside data display (marketing pages, native, motion
-  systems, brand identity): this skill defers. If the `impeccable` skill is available,
-  hand off to it; otherwise apply [reference/craft-floor.md](reference/craft-floor.md)
-  and say what was out of scope.
+  systems, brand identity): this skill defers. See
+  [reference/with-impeccable.md](reference/with-impeccable.md) for the division of
+  labour, the handoff, and the three places where general craft advice conflicts with
+  a dashboard rule. Without a general craft skill available, apply
+  [reference/craft-floor.md](reference/craft-floor.md) and say what was out of scope.
 
 ## Two registers
 
