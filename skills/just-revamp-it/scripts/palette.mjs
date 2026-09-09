@@ -98,6 +98,140 @@ export function deriveAccentUi(accent) {
   return oklchToHex({ L: 0.20, C, h });
 }
 
+// ---------------------------------------------------------------------------
+// Dark theme
+//
+// Dark is not an inversion. Alpha-over-black borders become alpha-over-white and
+// need roughly double the value to read as the same weight; elevation reverses
+// (shadows vanish on dark, so a raised surface gets LIGHTER); and the accent that
+// clears AA as a fill on white routinely fails as text on near-black. Every value
+// below is re-derived against the dark ground and validated independently.
+// ---------------------------------------------------------------------------
+
+const NEUTRAL_DARK = {
+  canvas:     "#0b0b0c",
+  surface:    "#1a1a1f",
+  raised:     "#24242b",
+  foreground: "#ededed",
+  muted:      "#a1a1aa",
+  border:     "rgba(255,255,255,0.12)",
+};
+
+// The ramp's organising principle is that step 0 carries the MOST contrast
+// against the ground, so visual weight falls as the population falls. On white
+// that means starting dark; on near-black it means starting light. Mirroring the
+// light ladder would invert the meaning, so the ladder is re-chosen, not flipped.
+const RAMP_L_DARK = [0.86, 0.78, 0.70, 0.61, 0.52];
+const RAMP_C_DARK = [0.50, 0.70, 0.90, 1.00, 0.95];
+
+/** Shift lightness in either direction until the colour clears `target` on `ground`. */
+function tuneFor(hex, ground, target, dir) {
+  const { L, C, h } = hexToOklch(hex);
+  for (let i = 0; i <= 90; i++) {
+    const l = L + dir * i * 0.01;
+    if (l < 0.05 || l > 0.99) break;
+    const cand = oklchToHex({ L: l, C, h });
+    if (contrast(cand, ground) >= target) return cand;
+  }
+  return hex;
+}
+
+/** The accent, re-derived so it can carry marks and links on a dark ground. */
+export function deriveAccentDark(accent) {
+  const ok = (hex) =>
+    contrast(hex, NEUTRAL_DARK.canvas) >= AA_LARGE && contrast(hex, NEUTRAL_DARK.surface) >= AA_LARGE;
+  if (ok(accent)) return accent;
+  return tuneFor(accent, NEUTRAL_DARK.surface, AA_LARGE, +1);
+}
+
+export function deriveRampDark(accent) {
+  const { C, h } = hexToOklch(accent);
+  return RAMP_L_DARK.map((L, i) => oklchToHex({ L, C: C * RAMP_C_DARK[i], h }));
+}
+
+/** Chip tone for dark: a lighter ink over a slightly higher-alpha fill. */
+function chipDark(tone) {
+  const fill = composite(tone, 0.18, NEUTRAL_DARK.surface);
+  return { fill, ink: tuneFor(tone, fill, AA, +1) };
+}
+
+export function deriveDark(accent) {
+  const accentUi = deriveAccentDark(accent);
+  const ramp = deriveRampDark(accent);
+  const heat = heatCeiling(accentUi, NEUTRAL_DARK.surface, NEUTRAL_DARK.foreground);
+  const { L, C, h } = hexToOklch(accentUi);
+  return {
+    accent,
+    accentUi,
+    accentUiDerived: accentUi.toLowerCase() !== accent.toLowerCase(),
+    ramp,
+    rampInk: ramp.map((c) => inkOn(c, "#0b0b0c", "#ffffff")),
+    heat: { min: 0.12, max: heat.max, ink: NEUTRAL_DARK.foreground, deadBand: heat.deadBand },
+    funnel: { from: ramp[0], to: ramp[3], breakOpacity: 0.4 },
+    hero: { from: accentUi, to: oklchToHex({ L: Math.max(0.30, L - 0.14), C, h }) },
+    delta: {
+      positive: chipDark(DELTA.positive),
+      negative: chipDark(DELTA.negative),
+      neutral:  chipDark(DELTA.neutral),
+    },
+    chartChrome: { gridline: "rgba(255,255,255,0.10)", axis: "rgba(255,255,255,0.22)", tick: NEUTRAL_DARK.muted },
+    neutral: NEUTRAL_DARK,
+  };
+}
+
+/** Contrast guard for the dark system. Same shape as validate(). */
+export function validateDark(d) {
+  const out = [];
+  const fail = (id, msg, fix) => out.push({ level: "fail", id, msg, fix });
+  const warn = (id, msg, fix) => out.push({ level: "warn", id, msg, fix });
+  const pass = (id, msg) => out.push({ level: "pass", id, msg });
+
+  const onCanvas = contrast(d.accentUi, d.neutral.canvas);
+  onCanvas < AA_LARGE
+    ? fail("dark-accent", `dark accent ${d.accentUi} is ${onCanvas.toFixed(2)}:1 on the dark canvas`,
+        "this hue cannot carry marks on a dark ground even after lightening")
+    : pass("dark-accent", `dark accent reads on the dark canvas at ${onCanvas.toFixed(2)}:1${d.accentUiDerived ? " (re-derived from the brand accent)" : ""}`);
+
+  const body = contrast(d.neutral.foreground, d.neutral.surface);
+  body < AA ? fail("dark-body", `body text is ${body.toFixed(2)}:1 on the card surface`, "lighten the foreground")
+            : pass("dark-body", `body text clears AA on the card surface at ${body.toFixed(2)}:1`);
+
+  const muted = contrast(d.neutral.muted, d.neutral.surface);
+  muted < AA ? warn("dark-muted", `muted text is ${muted.toFixed(2)}:1, below AA for body copy`,
+        "acceptable for large text only; do not use it for captions that carry meaning")
+             : pass("dark-muted", `muted text clears AA at ${muted.toFixed(2)}:1`);
+
+  // Elevation must be perceptible without relying on shadow.
+  const elev = contrast(d.neutral.surface, d.neutral.canvas);
+  elev < 1.10
+    ? warn("dark-elevation", `card and canvas differ by only ${elev.toFixed(2)}:1`,
+        "shadows are near-invisible on dark; separate surfaces by lightness plus a border")
+    : pass("dark-elevation", `card is separable from the canvas by lightness (${elev.toFixed(2)}:1)`);
+
+  for (const [name, chip] of Object.entries(d.delta)) {
+    const r = contrast(chip.ink, chip.fill);
+    r < AA ? fail("dark-delta", `${name} delta chip ink is ${r.toFixed(2)}:1 on its own fill`, "lighten the ink further")
+           : pass(`dark-delta-${name}`, `${name} delta chip clears AA at ${r.toFixed(2)}:1`);
+  }
+
+  const pinched = d.ramp
+    .map((c, i) => ({ i: i + 1, r: contrast(c, inkOn(c, "#0b0b0c", "#ffffff")) }))
+    .filter((x) => x.r < AA);
+  pinched.length
+    ? warn("dark-ramp-text", `dark ramp stop(s) ${pinched.map((p) => `${p.i} at ${p.r.toFixed(2)}:1`).join("; ")} cannot carry body text`,
+        "fill-only for these stops")
+    : pass("dark-ramp-text", "all dark ramp stops carry body text");
+
+  for (const kind of ["protanopia", "deuteranopia", "tritanopia"]) {
+    const col = [];
+    for (let i = 1; i < d.ramp.length; i++)
+      if (deltaE(simulate(d.ramp[i - 1], kind), simulate(d.ramp[i], kind)) < 0.040) col.push(`${i}->${i + 1}`);
+    col.length ? warn(`dark-cvd-${kind}`, `dark stops merge under ${kind}: ${col.join(", ")}`, "keep the lightness ladder; never encode by hue alone")
+               : pass(`dark-cvd-${kind}`, `dark ramp stays separable under ${kind}`);
+  }
+  return out;
+}
+
 export function derive(accent) {
   const ramp = deriveRamp(accent);
   const heat = heatCeiling(accent);
@@ -120,6 +254,7 @@ export function derive(accent) {
     },
     delta: DELTA,
     neutral: NEUTRAL,
+    dark: deriveDark(accent),
   };
 }
 
@@ -245,10 +380,44 @@ ${s.ramp.map((c, i) => `  --chart-${i + 1}-ink: ${s.rampInk[i]};`).join("\n")}
   --tint-selection: ${s.tints.selection};
   --track: ${s.tints.track};
 }
+
+/* Dark is re-derived, not inverted: surfaces lighten with elevation, borders are
+   alpha over white at roughly double the light value, the ramp starts light so
+   weight still falls with magnitude, and the heat ceiling is recomputed for this
+   hue against the dark surface. */
+${darkBlock(s.dark, ':root:not([data-theme="light"])', '@media (prefers-color-scheme: dark)')}
+${darkBlock(s.dark, ':root[data-theme="dark"]', null)}
 `;
 
-function report(sys, checks) {
+function darkBlock(d, selector, wrapper) {
+  const body = `${selector} {
+  --accent-ui: ${d.accentUi};
+  --accent-deep: ${d.hero.to};
+${d.ramp.map((c, i) => `  --chart-${i + 1}: ${c};`).join("\n")}
+${d.ramp.map((c, i) => `  --chart-${i + 1}-ink: ${d.rampInk[i]};`).join("\n")}
+  --funnel-from: ${d.funnel.from};
+  --funnel-to: ${d.funnel.to};
+  --heat-max: ${d.heat.max};
+  --heat-ink: ${d.heat.ink};
+  --delta-positive: ${d.delta.positive.ink};
+  --delta-positive-fill: ${d.delta.positive.fill};
+  --delta-negative: ${d.delta.negative.ink};
+  --delta-negative-fill: ${d.delta.negative.fill};
+  --canvas: ${d.neutral.canvas};
+  --surface: ${d.neutral.surface};
+  --raised: ${d.neutral.raised};
+  --foreground: ${d.neutral.foreground};
+  --muted: ${d.neutral.muted};
+  --border: ${d.neutral.border};
+  --gridline: ${d.chartChrome.gridline};
+  --axis: ${d.chartChrome.axis};
+}`;
+  return wrapper ? `${wrapper} {\n${body.split("\n").map((l) => "  " + l).join("\n")}\n}` : body;
+}
+
+function report(sys, checks, darkChecks = [], darkOnly = false) {
   const B = (t) => `\x1b[1m${t}\x1b[0m`;
+  const D = (t) => `\x1b[2m${t}\x1b[0m`;
   const swatch = (hex) => { const { r, g, b } = parseHex(hex); return `\x1b[48;2;${r};${g};${b}m   \x1b[0m`; };
   const lines = [];
   lines.push(`\n${B("Derived colour system")}  accent ${sys.accent}  (OKLCH L ${sys.accentOklch.L} C ${sys.accentOklch.C} h ${sys.accentOklch.h})\n`);
@@ -271,8 +440,24 @@ function report(sys, checks) {
     lines.push(`    ${tag}  ${c.msg}`);
     if (c.fix) lines.push(`          \x1b[2m-> ${c.fix}\x1b[0m`);
   }
-  const fails = checks.filter((c) => c.level === "fail").length;
-  const warns = checks.filter((c) => c.level === "warn").length;
+  if (darkChecks.length) {
+    const d = sys.dark;
+    lines.push("");
+    lines.push(B("  Dark theme") + D("  (re-derived, not inverted)"));
+    lines.push(`    accent ${swatch(d.accentUi)} ${d.accentUi}${d.accentUiDerived ? D("  (brand accent re-derived for the dark ground)") : ""}`);
+    lines.push("    ramp   " + d.ramp.map((c) => swatch(c)).join("") + "  " + D(d.ramp.join(" ")));
+    lines.push(`    surfaces ${swatch(d.neutral.canvas)}${swatch(d.neutral.surface)}${swatch(d.neutral.raised)}  ` + D("canvas / card / raised"));
+    lines.push(`    heat   alpha ${d.heat.min} to ${d.heat.max}` + D(`  (light theme: ${sys.heat.max})`));
+    for (const c of darkChecks.filter((x) => x.level !== "pass")) {
+      const tag = c.level === "fail" ? "\x1b[31mFAIL\x1b[0m" : "\x1b[33mWARN\x1b[0m";
+      lines.push(`    ${tag}  ${c.msg}`);
+      if (c.fix) lines.push(`          ${D("-> " + c.fix)}`);
+    }
+    lines.push(D(`    ${darkChecks.filter((c) => c.level === "pass").length} dark checks passed`));
+  }
+  const all = [...checks, ...darkChecks];
+  const fails = all.filter((c) => c.level === "fail").length;
+  const warns = all.filter((c) => c.level === "warn").length;
   lines.push("");
   lines.push(fails ? `  \x1b[31m${fails} failure(s)\x1b[0m and ${warns} warning(s). This accent is not usable as-is.`
                    : warns ? `  \x1b[33mUsable, with ${warns} warning(s).\x1b[0m`
@@ -292,8 +477,9 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   try { sys = derive(accentArg); }
   catch (e) { console.error(`error: ${e.message}`); process.exit(2); }
   const checks = validate(sys);
+  const darkChecks = validateDark(sys.dark);
   if (flags.includes("--css")) process.stdout.write(css(sys));
-  else if (flags.includes("--json")) process.stdout.write(JSON.stringify({ ...sys, checks }, null, 2) + "\n");
-  else process.stdout.write(report(sys, checks));
-  process.exit(checks.some((c) => c.level === "fail") ? 1 : 0);
+  else if (flags.includes("--json")) process.stdout.write(JSON.stringify({ ...sys, checks, darkChecks }, null, 2) + "\n");
+  else process.stdout.write(report(sys, checks, darkChecks, flags.includes("--dark")));
+  process.exit([...checks, ...darkChecks].some((c) => c.level === "fail") ? 1 : 0);
 }
