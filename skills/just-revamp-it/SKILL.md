@@ -76,6 +76,18 @@ so when one is a false positive.
 | `broadcast [target]` | Build | Translate a dashboard into a Slack card, email, PDF, or deck | [reference/broadcast.md](reference/broadcast.md) |
 | `document` | Build | Emit this project's own dashboard spec from its code | [reference/document.md](reference/document.md) |
 
+Reference chapters, loaded by the commands above rather than invoked directly:
+
+| Reference | Covers |
+|---|---|
+| [reference/color.md](reference/color.md) | Palette, semantic reservations, ramps, legibility |
+| [reference/numbers.md](reference/numbers.md) | Formatting, absence, deltas, comparison windows, time |
+| [reference/tables.md](reference/tables.md) | Table anatomy, overflow, density, provenance |
+| [reference/layout.md](reference/layout.md) | Page skeleton, grid patterns, navigation, URLs |
+| [reference/typography.md](reference/typography.md) | Type scale, spacing, shape, component primitives |
+| [reference/interaction.md](reference/interaction.md) | Motion, selection, hover, focus, tooltips, controls |
+| [reference/craft-floor.md](reference/craft-floor.md) | General quality floor when no craft skill is present |
+
 Routing:
 
 - **No argument:** run `audit`, then offer `critique` and `revamp`. That sequence is

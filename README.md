@@ -58,10 +58,25 @@ truncated bar baselines, proportional bars with no minimum width, numbers withou
 tabular figures, green and red used as category colours, lists with no empty state,
 metrics surfaced with no definition.
 
+## What it knows
+
+The `reference/` chapters were not written from opinion. They were extracted from a
+production dashboard by 25 agents across ten dimensions, adversarially re-audited
+against the source, and reduced to 552 practiced rules with the reason each one
+exists. Rules are tagged MUST, SHOULD or MAY, and separated into what is universal,
+what is specific to analytics dashboards, and what is a brand slot.
+
+Fifteen chapters: audit, critique, revamp, shape, brand, document, trust, charts,
+funnel, numbers, colour, tables, layout, typography, interaction, broadcast.
+
+The chapter worth reading first is [trust](skills/just-revamp-it/reference/trust.md).
+It is the part general design systems do not have, and the part that decides whether
+a dashboard is believed.
+
 ## Status
 
-v0.1.0. The script layer is complete and verified against a production dashboard.
-The `reference/` chapters that the commands load are in progress.
+v0.1.0. Script layer and reference layer complete, verified against a production
+dashboard. Not yet piloted on a second one.
 
 ## Licence
 
