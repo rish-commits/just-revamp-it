@@ -389,6 +389,11 @@ ${darkBlock(s.dark, ':root:not([data-theme="light"])', '@media (prefers-color-sc
 ${darkBlock(s.dark, ':root[data-theme="dark"]', null)}
 `;
 
+// Light is the default and dark is a narrow exception (see reference/theming.md),
+// so the dark block ships only when explicitly asked for. Emitting it by default
+// would quietly encourage a theme most dashboards should not have.
+const cssLight = (s) => css(s).split("\n/* Dark is re-derived")[0].trimEnd() + "\n";
+
 function darkBlock(d, selector, wrapper) {
   const body = `${selector} {
   --accent-ui: ${d.accentUi};
@@ -440,7 +445,7 @@ function report(sys, checks, darkChecks = [], darkOnly = false) {
     lines.push(`    ${tag}  ${c.msg}`);
     if (c.fix) lines.push(`          \x1b[2m-> ${c.fix}\x1b[0m`);
   }
-  if (darkChecks.length) {
+  if (darkChecks.length && darkOnly) {
     const d = sys.dark;
     lines.push("");
     lines.push(B("  Dark theme") + D("  (re-derived, not inverted)"));
@@ -455,7 +460,7 @@ function report(sys, checks, darkChecks = [], darkOnly = false) {
     }
     lines.push(D(`    ${darkChecks.filter((c) => c.level === "pass").length} dark checks passed`));
   }
-  const all = [...checks, ...darkChecks];
+  const all = darkOnly ? [...checks, ...darkChecks] : checks;
   const fails = all.filter((c) => c.level === "fail").length;
   const warns = all.filter((c) => c.level === "warn").length;
   lines.push("");
@@ -478,8 +483,8 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   catch (e) { console.error(`error: ${e.message}`); process.exit(2); }
   const checks = validate(sys);
   const darkChecks = validateDark(sys.dark);
-  if (flags.includes("--css")) process.stdout.write(css(sys));
+  if (flags.includes("--css")) process.stdout.write(flags.includes("--dark") ? css(sys) : cssLight(sys));
   else if (flags.includes("--json")) process.stdout.write(JSON.stringify({ ...sys, checks, darkChecks }, null, 2) + "\n");
   else process.stdout.write(report(sys, checks, darkChecks, flags.includes("--dark")));
-  process.exit([...checks, ...darkChecks].some((c) => c.level === "fail") ? 1 : 0);
+  process.exit((flags.includes("--dark") ? [...checks, ...darkChecks] : checks).some((c) => c.level === "fail") ? 1 : 0);
 }

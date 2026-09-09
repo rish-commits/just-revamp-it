@@ -18,7 +18,7 @@ them: the reader cannot tell what is good or bad, the numbers are not defined so
 people read them differently, or the surface accreted so many one-off decisions that
 nothing reads as deliberate. Audit for those first.
 
-## The three that matter
+## The four that matter
 
 1. **Restraint.** Good dashboards make few decisions and repeat them. A core of about
    five type sizes, four spacing steps, one accent. Sprawl is the most common cause of
@@ -27,7 +27,12 @@ nothing reads as deliberate. Audit for those first.
 2. **Judgment first.** Lead with the number and its verdict, then the detail. A surface
    that requires interpretation before it yields a conclusion has failed its reader.
    Big number, then delta, then context, then the drill-down.
-3. **Earned trust.** Name the population every number counts. Define terms on the
+3. **Light by default.** Dashboards are projected in lit rooms, screenshotted into
+   light decks, and printed. Light grounds also give a sequential ramp more usable
+   range, since every encoding here is a background fill. Dark is a narrow exception
+   requiring a written justification, not a preference. See
+   [reference/theming.md](reference/theming.md).
+4. **Earned trust.** Name the population every number counts. Define terms on the
    surface, not in a deck. Say what the data cannot say rather than drawing a clean
    shape that implies precision the source does not have. A dashboard that is once
    caught overstating is never fully believed again.
@@ -69,7 +74,7 @@ Deterministic measurement, so judgment is spent on things that need judgment.
 
 | Script | Use |
 |---|---|
-| `node <skill>/scripts/palette.mjs "<accent>" [--css\|--json]` | Derive and validate the full colour system, **both themes**, from one brand accent. Catches accent/delta collisions, pale accents, per-hue heat ceilings, colour-blind ramp collapse. `--css` emits light and dark tokens. Exits non-zero on failure, so it belongs in CI. |
+| `node <skill>/scripts/palette.mjs "<accent>" [--css\|--json]` | Derive and validate the full colour system, **both themes**, from one brand accent. Catches accent/delta collisions, pale accents, per-hue heat ceilings, colour-blind ramp collapse. `--css` emits light tokens; add `--dark` only for the narrow cases in `theming.md`. Exits non-zero on failure, so it belongs in CI. |
 | `node <skill>/scripts/vocabulary.mjs <dir> [--json]` | Measure design restraint. Reports the core vocabulary, the tail to fold in, and a 0-100 score. |
 | `node <skill>/scripts/scan.mjs <dir> [--json]` | Detect dashboard anti-patterns in source: non-semantic green/red, missing tabular numerals, truncated baselines, undefined metrics, missing empty states. |
 
@@ -105,7 +110,7 @@ Reference chapters, loaded by the commands above rather than invoked directly:
 | [reference/chart-types.md](reference/chart-types.md) | Distributions, scatter, geography, big-N, financial tables, real-time |
 | [reference/targets.md](reference/targets.md) | Targets, forecasts and thresholds, and why all three differ from measured data |
 | [reference/scale.md](reference/scale.md) | Small-N policy, large-N thresholds, per-form range table |
-| [reference/dark.md](reference/dark.md) | Dark theme: re-derived, not inverted |
+| [reference/theming.md](reference/theming.md) | Light by default, why, and how to ship dark correctly if you must |
 | [reference/accessibility.md](reference/accessibility.md) | Conformance target, no-fact-by-hue, chart contract, CI enforcement |
 | [reference/locale.md](reference/locale.md) | Locale, multi-currency, timezone, long labels, RTL |
 | [reference/output.md](reference/output.md) | Print, projection, TV, email, CSV export |

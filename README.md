@@ -78,9 +78,10 @@ a dashboard is believed.
 
 ## Status
 
-v0.2.0. Script layer and reference layer complete. The colour system derives and
-validates both light and dark themes from one accent. Verified against a
-production dashboard; not yet piloted on a second one.
+v0.2.1. Script layer and reference layer complete. Dashboards are light by default;
+the colour system derives and validates a full light palette from one accent, and
+can derive a validated dark one for the narrow cases that justify it. Verified
+against a production dashboard; not yet piloted on a second one.
 
 ## Licence
 

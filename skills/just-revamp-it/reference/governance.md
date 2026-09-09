@@ -59,6 +59,7 @@ One page, runnable by a non-designer, before a dashboard ships:
 - [ ] Are empty, loading and error states distinguishable from a real zero?
 - [ ] Is the comparison window stated?
 - [ ] Is the freshness stamp present, in a named timezone?
+- [ ] Is the surface light, or does a dark one carry a written exception?
 
 Twelve questions, and the first three catch most of what matters.
 

@@ -108,9 +108,9 @@ This is a real exception, not drift, because those media have different grounds,
 
 ## 10. Theming
 
-If you ship a single-theme product deliberately, that is a legitimate choice, but it takes coordinated moves rather than one: neutralise the dark variant inside the opted-out subtree, pin the tokens, paint the canvas explicitly so the browser's own ground does not show through at the edges, and keep new files free of dark variants while leaving inherited ones alone.
+**MUST — build light.** Dashboards are read projected in lit rooms, screenshotted into light decks, and printed, and a light ground gives a sequential ramp materially more usable range because every encoding here is a background fill. Dark is a narrow exception needing a written justification. The reasoning, the three situations where dark is defensible, and the derivation rules if you ship it are in `theming.md`.
 
-If you support both themes, define the complete light palette on the root, redefine only the tokens for dark, and never give a colour its only definition inside a media query.
+Shipping one theme takes coordinated moves rather than one: neutralise the theme variant inside the opted-out subtree, pin the tokens, paint the canvas explicitly so the browser's own ground does not show through at the edges, and keep new files free of theme variants while leaving inherited ones alone.
 
 **Force an always-visible scrollbar on wide tables**, painted in a theme-agnostic grey. Overlay scrollbars auto-hide on some platforms, removing the only cue that more data exists.
 

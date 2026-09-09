@@ -56,6 +56,7 @@ Run `vocabulary.mjs`. Grade the **core** vocabulary, not the raw count.
 - Numbers use tabular figures wherever they sit in a column or update in place.
 - The surface survives its real viewing conditions. Dashboards are read projected in meetings and screenshared at reduced size far more often than teams design for; check at 50% scale before calling it done.
 - Keyboard reachable, focus visible, interactive elements labelled.
+- The surface is light. A dark dashboard without a written exception is a P2 finding, and a P1 one if the surface is projected, printed or screenshotted into decks (`theming.md`).
 
 **0** fails AA in normal use · **2** passes at rest, fails in states · **4** passes at every value and state
 
