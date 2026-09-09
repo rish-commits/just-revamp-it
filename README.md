@@ -66,8 +66,11 @@ against the source, and reduced to 552 practiced rules with the reason each one
 exists. Rules are tagged MUST, SHOULD or MAY, and separated into what is universal,
 what is specific to analytics dashboards, and what is a brand slot.
 
-Fifteen chapters: audit, critique, revamp, shape, brand, document, trust, charts,
-funnel, numbers, colour, tables, layout, typography, interaction, broadcast.
+Twenty-eight chapters. The core was extracted from practice; the rest closes the
+gaps that dashboard could not teach, reasoned from the same grammar: chart
+selection, distributions and scatter and maps, targets and forecasts and
+thresholds, data-volume extremes, dark mode, accessibility, locale and currency,
+print and export, performance budgets, metric naming, and governance.
 
 The chapter worth reading first is [trust](skills/just-revamp-it/reference/trust.md).
 It is the part general design systems do not have, and the part that decides whether
@@ -75,8 +78,9 @@ a dashboard is believed.
 
 ## Status
 
-v0.1.0. Script layer and reference layer complete, verified against a production
-dashboard. Not yet piloted on a second one.
+v0.2.0. Script layer and reference layer complete. The colour system derives and
+validates both light and dark themes from one accent. Verified against a
+production dashboard; not yet piloted on a second one.
 
 ## Licence
 

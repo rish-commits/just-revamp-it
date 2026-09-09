@@ -7,7 +7,7 @@
     {
       "name": "just-revamp-it",
       "description": "Audit, revamp and build dashboards to one shared visual and data-representation system. Brand-neutral and multi-brand by design: derives and validates a full colour system from one accent, measures design restraint, and detects dashboard anti-patterns that make readers draw wrong conclusions.",
-      "version": "0.1.0",
+      "version": "0.2.0",
       "author": { "name": "rish-commits" },
       "homepage": "https://github.com/rish-commits/just-revamp-it",
       "license": "Apache-2.0",

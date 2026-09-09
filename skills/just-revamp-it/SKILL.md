@@ -32,6 +32,21 @@ nothing reads as deliberate. Audit for those first.
    shape that implies precision the source does not have. A dashboard that is once
    caught overstating is never fully believed again.
 
+## Where these rules came from
+
+This system was extracted from one production product-analytics dashboard: a few
+hundred users, one timezone, one currency, one accent hue, one export target, short
+funnels, and a deliberately single-theme interface. That provenance matters.
+
+- Chapters covering what that dashboard **shipped** (charts, funnels, tables, trust,
+  numbers, layout, type, interaction, broadcast) are evidenced by practice.
+- Chapters covering what it **never had to solve** (chart-types, targets, dark, scale,
+  locale, output, performance) are reasoned from the same grammar. Sound, but unproven.
+
+Do not mistake a single-instance decision for validated law. When a rule does not
+survive contact with real data, that is information the system owner needs, not a
+reason to quietly drop it.
+
 ## Rule tiers
 
 Every rule in `reference/` is tagged. Respect the tag.
@@ -54,7 +69,7 @@ Deterministic measurement, so judgment is spent on things that need judgment.
 
 | Script | Use |
 |---|---|
-| `node <skill>/scripts/palette.mjs "<accent>" [--css\|--json]` | Derive and validate a full colour system from one brand accent. Catches accent/delta collisions, pale accents, per-hue heat ceilings, colour-blind ramp collapse. |
+| `node <skill>/scripts/palette.mjs "<accent>" [--css\|--json]` | Derive and validate the full colour system, **both themes**, from one brand accent. Catches accent/delta collisions, pale accents, per-hue heat ceilings, colour-blind ramp collapse. `--css` emits light and dark tokens. Exits non-zero on failure, so it belongs in CI. |
 | `node <skill>/scripts/vocabulary.mjs <dir> [--json]` | Measure design restraint. Reports the core vocabulary, the tail to fold in, and a 0-100 score. |
 | `node <skill>/scripts/scan.mjs <dir> [--json]` | Detect dashboard anti-patterns in source: non-semantic green/red, missing tabular numerals, truncated baselines, undefined metrics, missing empty states. |
 
@@ -69,7 +84,7 @@ so when one is a false positive.
 | `critique [target]` | Evaluate | Does this yield a correct judgment fast? Chart choice, hierarchy, honesty | [reference/critique.md](reference/critique.md) |
 | `revamp [target]` | Refine | Apply the system to an existing dashboard, worst-first | [reference/revamp.md](reference/revamp.md) |
 | `shape [surface]` | Build | Plan a dashboard's questions, IA and page composition before code | [reference/shape.md](reference/shape.md) |
-| `chart [question]` | Build | Choose and build the right form for one question | [reference/charts.md](reference/charts.md) |
+| `chart [question]` | Build | Choose and build the right form for one question | [reference/choosing.md](reference/choosing.md) then [reference/charts.md](reference/charts.md) |
 | `funnel [target]` | Build | Build or fix a funnel, including drop-off and honesty rules | [reference/funnel.md](reference/funnel.md) |
 | `trust [target]` | Refine | Populations, definitions, caveats, freshness, empty and error states | [reference/trust.md](reference/trust.md) |
 | `brand [accent]` | Setup | Onboard a brand: derive tokens, validate, write `.revamp/brand.json` | [reference/brand.md](reference/brand.md) |
@@ -86,6 +101,17 @@ Reference chapters, loaded by the commands above rather than invoked directly:
 | [reference/layout.md](reference/layout.md) | Page skeleton, grid patterns, navigation, URLs |
 | [reference/typography.md](reference/typography.md) | Type scale, spacing, shape, component primitives |
 | [reference/interaction.md](reference/interaction.md) | Motion, selection, hover, focus, tooltips, controls |
+| [reference/choosing.md](reference/choosing.md) | Which form answers which question, and the forms this system refuses |
+| [reference/chart-types.md](reference/chart-types.md) | Distributions, scatter, geography, big-N, financial tables, real-time |
+| [reference/targets.md](reference/targets.md) | Targets, forecasts and thresholds, and why all three differ from measured data |
+| [reference/scale.md](reference/scale.md) | Small-N policy, large-N thresholds, per-form range table |
+| [reference/dark.md](reference/dark.md) | Dark theme: re-derived, not inverted |
+| [reference/accessibility.md](reference/accessibility.md) | Conformance target, no-fact-by-hue, chart contract, CI enforcement |
+| [reference/locale.md](reference/locale.md) | Locale, multi-currency, timezone, long labels, RTL |
+| [reference/output.md](reference/output.md) | Print, projection, TV, email, CSV export |
+| [reference/performance.md](reference/performance.md) | Node-count budgets and where work belongs |
+| [reference/naming.md](reference/naming.md) | Metric naming grammar, title voice, copy standards, units |
+| [reference/governance.md](reference/governance.md) | Ownership, exceptions, review checklist, migration, enforcement |
 | [reference/craft-floor.md](reference/craft-floor.md) | General quality floor when no craft skill is present |
 
 Routing:
