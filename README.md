@@ -1,0 +1,68 @@
+# just-revamp-it
+
+A Claude Code skill for dashboards.
+
+A dashboard is an instrument, and it is judged on one thing: whether a reader
+reaches a **correct** conclusion, fast, and knows how much to trust it. This skill
+audits, revamps and builds data surfaces against that standard.
+
+It is brand-neutral and multi-brand by design. A brand supplies one accent; the
+full colour system is derived and validated from it, so a team cannot accidentally
+ship an illegible ramp or a delta colour that collides with its own identity.
+
+## Install
+
+```
+/plugin marketplace add rish-commits/just-revamp-it
+/plugin install just-revamp-it@just-revamp-it
+```
+
+Or drop `skills/just-revamp-it/` into a project's `.claude/skills/` directory.
+
+## Use
+
+```
+/just-revamp-it audit          # measurable checks against the system
+/just-revamp-it critique       # does this yield a correct judgment, fast?
+/just-revamp-it revamp         # apply the system, worst-first
+/just-revamp-it brand "#7c3aed"  # onboard a brand: derive and validate tokens
+```
+
+With no argument it audits, then offers critique and revamp.
+
+## What it measures
+
+Three scripts, so judgment is spent only where judgment is needed. Each runs
+standalone with plain Node and no dependencies.
+
+```bash
+node skills/just-revamp-it/scripts/palette.mjs "#7c3aed"      # derive + validate a colour system
+node skills/just-revamp-it/scripts/vocabulary.mjs ./src       # measure design restraint
+node skills/just-revamp-it/scripts/scan.mjs ./src             # detect dashboard anti-patterns
+```
+
+**`palette.mjs`** turns one accent into a validated system: a five-step sequential
+ramp in OKLCH so the ladder holds for any hue, per-hue heat-fill ceilings, and
+checks for accent/delta collision, pale accents that cannot carry a 2px line, and
+ramps that collapse under colour-vision deficiency. Where a brand colour fails, it
+derives a working colour in the same hue rather than rejecting the brand.
+
+**`vocabulary.mjs`** measures restraint, which is the most common reason a dashboard
+"looks off" while every individual choice is defensible. It grades the *core*
+vocabulary (the smallest set of values covering 90% of uses) rather than the raw
+count, so a disciplined system with a tail is not scored like an evenly-sprawling
+one, and it names the tail as the cleanup list.
+
+**`scan.mjs`** detects anti-patterns that make readers draw wrong conclusions:
+truncated bar baselines, proportional bars with no minimum width, numbers without
+tabular figures, green and red used as category colours, lists with no empty state,
+metrics surfaced with no definition.
+
+## Status
+
+v0.1.0. The script layer is complete and verified against a production dashboard.
+The `reference/` chapters that the commands load are in progress.
+
+## Licence
+
+Apache-2.0.
