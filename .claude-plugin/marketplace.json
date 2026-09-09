@@ -1,0 +1,12 @@
+{
+  "name": "just-revamp-it",
+  "owner": { "name": "Internal Design Systems" },
+  "plugins": [
+    {
+      "name": "just-revamp-it",
+      "source": "./",
+      "description": "Audit, revamp and build dashboards to one shared visual and data-representation system. Brand-neutral, multi-brand by design.",
+      "version": "0.1.0"
+    }
+  ]
+}
