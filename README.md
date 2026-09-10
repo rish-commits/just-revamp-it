@@ -62,6 +62,12 @@ vocabulary (the smallest set of values covering 90% of uses) rather than the raw
 count, so a disciplined system with a tail is not scored like an evenly-sprawling
 one, and it names the tail as the cleanup list.
 
+**`specificity.mjs`** asks a different question: was this built for *this* product, or
+for any product? Invented data, metric names lifted from starter blocks, fabricated
+deltas, palettes spanning the spectrum, gradient text, blurred data surfaces. It
+scores a hand-built dashboard 89 and a generated one 0. The tell is never ugliness;
+generated dashboards are tidy. The tell is that they know nothing about the product.
+
 **`scan.mjs`** detects anti-patterns that make readers draw wrong conclusions:
 truncated bar baselines, proportional bars with no minimum width, numbers without
 tabular figures, green and red used as category colours, lists with no empty state,
@@ -75,7 +81,7 @@ against the source, and reduced to 552 practiced rules with the reason each one
 exists. Rules are tagged MUST, SHOULD or MAY, and separated into what is universal,
 what is specific to analytics dashboards, and what is a brand slot.
 
-Twenty-eight chapters. The core was extracted from practice; the rest closes the
+31 chapters. The core was extracted from practice; the rest closes the
 gaps that dashboard could not teach, reasoned from the same grammar: chart
 selection, distributions and scatter and maps, targets and forecasts and
 thresholds, data-volume extremes, dark mode, accessibility, locale and currency,
@@ -100,7 +106,7 @@ See [reference/kit.md](skills/just-revamp-it/reference/kit.md).
 
 ## Status
 
-v0.3.0. Script, reference and kit layers complete. Dashboards are light by default;
+v0.4.0. Script, reference and kit layers complete. Dashboards are light by default;
 the colour system derives and validates a full light palette from one accent, and
 can derive a validated dark one for the narrow cases that justify it. Verified
 against a production dashboard; not yet piloted on a second one.

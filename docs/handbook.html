@@ -259,9 +259,9 @@ footer { padding: 3rem 0 0; font-family: var(--mono); font-size: 0.6875rem;
   <header class="mast">
     <div class="mast__eyebrow">
       <span>Dashboard design system</span>
-      <span>v0.3.0</span>
+      <span>v0.4.0</span>
       <span>Apache-2.0</span>
-      <span>30 chapters · 3 scripts · 1 kit</span>
+      <span>31 chapters · 4 scripts · 1 kit</span>
     </div>
     <h1 class="mast__title">Just Revamp It</h1>
     <p class="mast__thesis">
@@ -351,7 +351,7 @@ footer { padding: 3rem 0 0; font-family: var(--mono); font-size: 0.6875rem;
     <div class="sec__rail"><span class="sec__num">03</span><span class="sec__label">Measured</span></div>
     <div class="sec__body">
       <h2>Rules that can be checked, are</h2>
-      <p class="lead">Three scripts, no dependencies. Prose gets argued about; a failing exit code
+      <p class="lead">Four scripts, no dependencies. Prose gets argued about; a failing exit code
         does not.</p>
 
       <div class="tiles">
@@ -375,12 +375,22 @@ footer { padding: 3rem 0 0; font-family: var(--mono); font-size: 0.6875rem;
           <p class="tile__note">anti-patterns that make a reader draw a wrong conclusion: truncated
             baselines, invisible small values, missing tabular figures, undefined metrics.</p>
         </div>
+        <div class="tile">
+          <div class="tile__label">specificity.mjs</div>
+          <p class="tile__value">0–100</p>
+          <p class="tile__note">was this built for <em>this</em> product, or any product? Invented
+            data, template metric names, fabricated deltas, rainbow palettes, gradient text.</p>
+        </div>
       </div>
 
-      <h3>What the restraint metric found</h3>
+      <h3>What the metrics found</h3>
       <p>Run against the production dashboard the system was extracted from: a core of four type
         sizes carrying 91% of uses, with a six-value tail. That distinction is the whole point.
         Counting distinct values alone would have scored a disciplined system as chaos.</p>
+      <p>The specificity detector scores that same hand-built dashboard <strong>89</strong>, and a
+        synthetic generated one <strong>0</strong>. The tell is never ugliness. Generated dashboards
+        are tidy. The tell is that they know nothing about the product: borrowed metric names,
+        invented figures, and a palette that encodes nothing.</p>
     </div>
   </section>
 
@@ -500,7 +510,7 @@ footer { padding: 3rem 0 0; font-family: var(--mono); font-size: 0.6875rem;
   <section class="sec">
     <div class="sec__rail"><span class="sec__num">05</span><span class="sec__label">Contents</span></div>
     <div class="sec__body">
-      <h2>Thirty chapters</h2>
+      <h2>Thirty-one chapters</h2>
       <p class="lead">Loaded on demand, never all at once. The router costs about 250 tokens; a
         chapter loads only when a command needs it.</p>
       <div class="map">
@@ -559,6 +569,7 @@ footer { padding: 3rem 0 0; font-family: var(--mono); font-size: 0.6875rem;
           <h3>Operating it</h3>
           <ul class="map__list">
             <li><b>governance</b><span>who decides</span></li>
+            <li><b>specificity</b><span>generated?</span></li>
             <li><b>kit</b><span>shipped code</span></li>
             <li><b>craft-floor</b><span>minimum bar</span></li>
             <li><b>with-impeccable</b><span>composition</span></li>
@@ -580,7 +591,8 @@ footer { padding: 3rem 0 0; font-family: var(--mono); font-size: 0.6875rem;
       <h3>Or run the scripts directly</h3>
 <pre>node scripts/palette.mjs "#7c3aed" --css     <span class="c"># derive + validate tokens</span>
 node scripts/vocabulary.mjs ./src            <span class="c"># restraint score</span>
-node scripts/scan.mjs ./src                  <span class="c"># anti-patterns</span></pre>
+node scripts/scan.mjs ./src                  <span class="c"># anti-patterns</span>
+node scripts/specificity.mjs ./src           <span class="c"># generated, or designed?</span></pre>
       <p>Plain Node, no dependencies. <code>palette.mjs</code> exits non-zero on failure, so it drops
         straight into CI.</p>
     </div>
@@ -606,7 +618,7 @@ node scripts/scan.mjs ./src                  <span class="c"># anti-patterns</sp
   </section>
 
   <footer>
-    <span>Just Revamp It v0.3.0</span>
+    <span>Just Revamp It v0.4.0</span>
     <span>Apache-2.0</span>
     <span>github.com/rish-commits/just-revamp-it</span>
     <span>This page uses the system it documents</span>

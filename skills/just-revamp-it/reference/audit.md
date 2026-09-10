@@ -10,6 +10,7 @@ Run all three, from the skill's base directory, with cwd at the user's project:
 node <skill>/scripts/scan.mjs <src> --json         # anti-patterns
 node <skill>/scripts/vocabulary.mjs <src> --json   # restraint
 node <skill>/scripts/palette.mjs "<accent>"        # colour system (accent from .revamp/brand.json)
+node <skill>/scripts/specificity.mjs <src> --json  # generated-rather-than-designed
 ```
 
 **Verify every finding in context before reporting it.** Rules marked `heuristic` in the scanner output are pattern matches, not proofs. Open the file, read the line, and drop it if it is a false positive. Say in the report how many you dropped, so the reader knows the list was filtered rather than pasted.
@@ -70,7 +71,18 @@ Does a reader reach a correct conclusion fast?
 
 **0** requires interpretation to yield anything · **2** yields a verdict with effort · **4** verdict in seconds, detail on demand
 
-### 6. Resilience
+### 6. Specificity
+Was this built for this product, or for any product? Run `specificity.mjs`.
+
+- No placeholder names, example addresses or template figures anywhere a reader would take them as measurements.
+- Metric names come from this product's own vocabulary, not from a starter block.
+- Every change figure is computed from a stated window, never written as a literal.
+- The palette encodes something. Categorical colour spanning the spectrum encodes nothing.
+- No gradient text, no blurred data surfaces, no shadow on everything.
+
+**0** could be any product (score below 60) · **2** partly templated (60-84) · **4** specific throughout (85+), with any heuristic hits confirmed as justified
+
+### 7. Resilience
 - Empty, loading, partial and error states exist and are distinguishable from each other. Blank space that means "no data yet" and blank space that means "the query failed" are different messages.
 - Extremes hold: 0 rows, 1 row, 30,000 rows; 2 funnel steps and 20; labels far longer than the design assumed.
 - Wide content scrolls inside its own container; the page never scrolls sideways.
@@ -87,11 +99,12 @@ Does a reader reach a correct conclusion fast?
 | 3 | Restraint  |  ?/4  |             |
 | 4 | Legibility |  ?/4  |             |
 | 5 | Judgment   |  ?/4  |             |
-| 6 | Resilience |  ?/4  |             |
-|   | **Total**  | **??/24** |         |
+| 6 | Specificity|  ?/4  |             |
+| 7 | Resilience |  ?/4  |             |
+|   | **Total**  | **??/28** |         |
 ```
 
-**Bands:** 22-24 excellent · 18-21 good · 13-17 needs work · 8-12 poor · 0-7 rebuild.
+**Bands:** 26-28 excellent · 21-25 good · 15-20 needs work · 9-14 poor · 0-8 rebuild.
 
 Lead with a **Truth verdict**: pass or fail on whether this dashboard can be believed. A surface scoring well everywhere else while failing Truth is worse than one that scores badly overall, because it will be trusted while being wrong. Say so plainly.
 

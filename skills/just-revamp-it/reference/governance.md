@@ -60,6 +60,7 @@ One page, runnable by a non-designer, before a dashboard ships:
 - [ ] Is the comparison window stated?
 - [ ] Is the freshness stamp present, in a named timezone?
 - [ ] Is the surface light, or does a dark one carry a written exception?
+- [ ] Is any data on screen invented, or any metric name borrowed from a template?
 
 Twelve questions, and the first three catch most of what matters.
 

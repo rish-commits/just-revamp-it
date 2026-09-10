@@ -77,6 +77,7 @@ Deterministic measurement, so judgment is spent on things that need judgment.
 | `node <skill>/scripts/palette.mjs "<accent>" [--css\|--json]` | Derive and validate the full colour system, **both themes**, from one brand accent. Catches accent/delta collisions, pale accents, per-hue heat ceilings, colour-blind ramp collapse. `--css` emits light tokens; add `--dark` only for the narrow cases in `theming.md`. Exits non-zero on failure, so it belongs in CI. |
 | `node <skill>/scripts/vocabulary.mjs <dir> [--json]` | Measure design restraint. Reports the core vocabulary, the tail to fold in, and a 0-100 score. |
 | `node <skill>/scripts/scan.mjs <dir> [--json]` | Detect dashboard anti-patterns in source: non-semantic green/red, missing tabular numerals, truncated baselines, undefined metrics, missing empty states. |
+| `node <skill>/scripts/specificity.mjs <dir> [--json]` | Detect a dashboard that was generated rather than designed: invented data, template metric names, fabricated deltas, rainbow palettes, gradient text. Scores 0-100. |
 
 `--tokens` emits `tokens.json`, the machine-readable source of truth a drift test reads.
 
@@ -119,6 +120,7 @@ Reference chapters, loaded by the commands above rather than invoked directly:
 | [reference/performance.md](reference/performance.md) | Node-count budgets and where work belongs |
 | [reference/naming.md](reference/naming.md) | Metric naming grammar, title voice, copy standards, units |
 | [reference/governance.md](reference/governance.md) | Ownership, exceptions, review checklist, migration, enforcement |
+| [reference/specificity.md](reference/specificity.md) | Does this dashboard belong to this product, or to any product? |
 | [reference/kit.md](reference/kit.md) | Shipped tokens, styles, components and starter under `assets/` |
 | [reference/with-impeccable.md](reference/with-impeccable.md) | Composing with a general craft skill, and where the advice conflicts |
 | [reference/craft-floor.md](reference/craft-floor.md) | General quality floor when no craft skill is present |
