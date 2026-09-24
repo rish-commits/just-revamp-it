@@ -21,12 +21,23 @@ to update the same URL.
 
 ## Install
 
-```
-/plugin marketplace add rish-commits/just-revamp-it
-/plugin install just-revamp-it@just-revamp-it
+One command, in your project root. Works in every place Claude Code runs
+(terminal, VS Code, JetBrains, desktop) with nothing to configure:
+
+```sh
+git clone -q --depth 1 https://github.com/rish-commits/just-revamp-it.git .jri \
+  && mkdir -p .claude/skills && cp -R .jri/skills/just-revamp-it .claude/skills/ \
+  && rm -rf .jri && echo "installed — restart Claude Code"
 ```
 
-Or drop `skills/just-revamp-it/` into a project's `.claude/skills/` directory.
+Then restart Claude Code and run `/just-revamp-it audit`.
+
+Or, as a plugin, if you prefer it available across all your projects:
+
+```sh
+claude plugin marketplace add rish-commits/just-revamp-it
+claude plugin install just-revamp-it@just-revamp-it
+```
 
 ## Use
 
